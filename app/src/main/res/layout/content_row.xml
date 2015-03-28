@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="72dp">
+
+    <ImageView
+        android:id="@+id/contentIcon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/ic_launcher"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        />
+    <!--
+    <TextView
+        android:id="@+id/contentCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_section1"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="72dp"
+        />
+    -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+
+        >
+            <TextView
+                android:id="@+id/contentCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:gravity="center_vertical|left"
+                android:text="LUCY"
+                />
+
+            <TextView
+                android:id="@+id/contentDescription"
+                android:layout_below="@id/contentCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="13dp"
+                android:layout_gravity="fill_horizontal"
+                android:text="test description"
+
+                />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

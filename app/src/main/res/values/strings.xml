@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">awesomeapp</string>
+    <string name="title_section1">section 1</string>
+    <string name="title_section2">section 2</string>
+    <string name="title_section3">section 3</string>
+    <string name="navigation_drawer_open">open navigation drawer</string>
+    <string name="navigation_drawer_close">close navigation drawer</string>
+    <string name="action_example">example action</string>
+    <string name="action_settings">settings</string>
+    <string name="app_detail">navigation drawer layout is something i loved from ages ......</string>
+
+    <string-array name="drawer_list">
+        <item>dashboard</item>
+        <item>events</item>
+        <item>books</item>
+    </string-array>
+
+    <string name="title_activity_add_event">add new event</string>
+    <string name="hello_world">hello world!</string>
+    
+    
+    <string name="add_title">add event title</string>
+    <string name="add_description">add description to event</string>
+</resources>

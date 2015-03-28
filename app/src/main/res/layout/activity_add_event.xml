@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.awesome.wathmal.awesomeapp.AddEventActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_title"
+        android:id="@+id/textView"
+        android:textColor="@android:color/black"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextEventTitle"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/textView"
+        android:backgroundTint="@color/primarydark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_description"
+        android:textColor="@android:color/black"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/editTextEventTitle"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:textColor="@android:color/black"
+        android:ems="10"
+        android:id="@+id/editTextEventDescription"
+        android:layout_below="@+id/textView2"
+        android:backgroundTint="@color/primarydark" />
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="save"
+        android:onClick="saveButtonHandler"
+        android:id="@+id/buttonAddEvent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add date"
+        android:id="@+id/buttonAddDate"
+        android:layout_below="@+id/editTextEventDescription"
+        android:layout_toEndOf="@+id/editTextDate" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:textAlignment="center"
+
+        android:textColor="@android:color/black"
+        android:id="@+id/editTextDate"
+        android:layout_alignBottom="@+id/buttonAddDate"
+        android:layout_alignEnd="@+id/buttonAddEvent"
+        android:layout_alignParentEnd="false"
+        android:autoText="false"
+        android:backgroundTint="@color/primarydark" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="repeated"
+        android:textColor="@android:color/black"
+        android:id="@+id/checkBoxRepeated"
+        android:layout_above="@+id/buttonAddEvent"
+        android:layout_centerHorizontal="true"
+        android:buttonTint="@color/primarydark" />
+</RelativeLayout>
