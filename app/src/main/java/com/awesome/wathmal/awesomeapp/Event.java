@@ -10,24 +10,28 @@ import java.util.Locale;
  * Created by wathmal on 3/19/15.
  */
 public class Event {
+    /*
+    * default values should be initialised in every class!
+    * otherwise database handler will trow exceptions for non initilized variables
+    * */
     private int _id;
-    private String _title;
-    private String _description;
-    private Date _date;
-    private boolean _repeated;
+    private String _title = null;
+    private String _description= null;
+    private Date _date= null;
+    private boolean _repeated= false;
 
     /*
     later modifications
      */
-    private int locationId;
-    private String recurrenceType;
-    private String eventType;
+    private int locationId= 1;
+    private String recurrenceType= null;
+    private String eventType= null;
     /*
     foreign key to hold the resource id connecting to event
     ex: book_id, media_id
      */
-    private int resourceId;
-    private boolean notify;
+    private int resourceId= 0;
+    private boolean notify= false;
 
     public Event(){
 

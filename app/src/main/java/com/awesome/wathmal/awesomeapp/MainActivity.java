@@ -62,6 +62,11 @@ public class MainActivity extends Activity
         this.dh= new DatabaseHandler(this);
 
         /*
+        Location loc1= new Location((float)6.829237,(float)80.0993981,"unknown location");
+        dh.addLocation(loc1);
+
+        */
+        /*
         Event e1= new Event("TEST EVENT", "testing event database sqlite", new Date(),false);
         Event e2= new Event("තාවකාලික ඔටුවා", "සිංහල සහයෝගය සොයා බැලීමට", new Date(),false);
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // all static variables
     // database version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     // db name
     private static final String DATABASE_NAME = "pdaproject";
@@ -151,12 +152,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 LOCATION_KEY_ADDRESS + "TEXT"
                 +")";
 
-        String CREATE_MEDIA_TABLE= "CREATE TABLE "+ TABLE_MEDIA +"("+
-                MEDIA_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
-                MEDIA_KEY_TYPE+ " VARCHAR(30) NOT NULL," +
-                MEDIA_KEY_RESOURCE_ID+ " INTEGER,"+
-                MEDIA_KEY_EVENT_ID+ " INTEGER"
-                +")";
+
 
 
 
@@ -165,12 +161,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 EVENT_KEY_TITLE+ " VARCHAR(30) NOT NULL," +
                 EVENT_KEY_DUE_DATE+" DATE," +
                 EVENT_KEY_DESC+" VARCHAR(200)," +
-                EVENT_KEY_REPEATED+ " BOOLEAN"+
-                EVENT_KEY_LOCATION_ID+ " INTEGER"+
-                EVENT_KEY_RECURRENCE_TYPE+ " VARCHAR(20)"+
-                EVENT_KEY_EVENT_TYPE+ " VARCHAR(20)"+
-                EVENT_KEY_RESOURCE_ID+ " INTEGER"+
+                EVENT_KEY_REPEATED+ " BOOLEAN,"+
+                EVENT_KEY_LOCATION_ID+ " INTEGER REFERENCES "+ TABLE_LOCATION+"("+LOCATION_KEY_ID+") ON UPDATE CASCADE,"+
+                EVENT_KEY_RECURRENCE_TYPE+ " VARCHAR(20),"+
+                EVENT_KEY_EVENT_TYPE+ " VARCHAR(20),"+
+                EVENT_KEY_RESOURCE_ID+ " INTEGER,"+
                 EVENT_KEY_NOTIFY+ " BOOLEAN"
+                +")";
+
+        String CREATE_MEDIA_TABLE= "CREATE TABLE "+ TABLE_MEDIA +"("+
+                MEDIA_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
+                MEDIA_KEY_TYPE+ " VARCHAR(30) NOT NULL," +
+                MEDIA_KEY_RESOURCE_ID+ " INTEGER,"+
+                MEDIA_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
 
@@ -179,7 +182,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 BOOK_KEY_TITLE+ " VARCHAR(100),"+
                 BOOK_KEY_PAGES+ " INTEGER,"+
                 BOOK_KEY_CURRENT_PAGE+ " INTEGER,"+
-                BOOK_KEY_EVENT_ID+ " INTEGER"
+                BOOK_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
 
@@ -188,7 +191,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 MOVIE_KEY_TITLE+ " VARCHAR(200),"+
                 MOVIE_KEY_DURATION+ " INTEGER,"+
                 MOVIE_KEY_CURRENT_TIME+ " INTEGER,"+
-                MOVIE_KEY_MEDIA_ID+ " INTEGER"
+                MOVIE_KEY_MEDIA_ID+ " INTEGER REFERENCES "+TABLE_MEDIA+"("+MEDIA_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
         String CREATE_AUDIO_BOOK_TABLE= "CREATE TABLE "+ TABLE_AUDIO_BOOK+ "("+
@@ -196,51 +199,75 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 AUDIO_BOOK_TITLE+ " VARCHAR(100),"+
                 AUDIO_BOOK_DURATION+ " INTEGER,"+
                 AUDIO_BOOK_CURR_TIME+ " INTEGER,"+
-                AUDIO_BOOK_MEDIA_ID+ " INTEGER"
+                AUDIO_BOOK_MEDIA_ID+ " INTEGER REFERENCES "+TABLE_MEDIA+"("+MEDIA_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
         String CREATE_MEDICINE_TABLE= "CREATE TABLE "+ TABLE_MEDICINE +"("+
                 MEDICINE_KEY_ID+ "INTEGER PRIMARY KEY NOT NULL,"+
-                MEDICINE_KEY_NAME+ "VARCHAR(100),"+
+                MEDICINE_KEY_NAME+ " VARCHAR(100),"+
                 MEDICINE_KEY_DOSAGE+ " VARCHAR(50),"+
-                MEDICINE_KEY_EVENT_ID+ " INTEGER"
+                MEDICINE_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
 
         String CREATE_TODO_TABLE= "CREATE TABLE "+ TABLE_TODO +"("+
                 TODO_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                TODO_EVENT_ID+ " INTEGER"
+                TODO_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
         String CREATE_DAILY_TABLE= "CREATE TABLE "+ TABLE_DAILY +"("+
                 DAILY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                DAILY_EVENT_ID+ " INTEGER"
+                DAILY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
         String CREATE_WEEKLY_TABLE= "CREATE TABLE "+ TABLE_WEEKLY +"("+
                 WEEKLY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                WEEKLY_EVENT_ID+ " INTEGER"
+                WEEKLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
         String CREATE_MONTHLY_TABLE= "CREATE TABLE "+ TABLE_MONTHLY +"("+
                 MONTHLY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                MONTHLY_EVENT_ID+ " INTEGER"
+                MONTHLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
         String CREATE_YEARLY_TABLE= "CREATE TABLE "+ TABLE_YEARLY +"("+
                 YEARLY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                YEARLY_EVENT_ID+ " INTEGER"
+                YEARLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
                 +")";
 
-
+        db.execSQL(CREATE_LOCATION_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
+        db.execSQL(CREATE_MEDIA_TABLE);
+        db.execSQL(CREATE_BOOK_TABLE);
+        db.execSQL(CREATE_MOVIE_TABLE);
+        db.execSQL(CREATE_AUDIO_BOOK_TABLE);
+        db.execSQL(CREATE_MEDICINE_TABLE);
+        db.execSQL(CREATE_TODO_TABLE);
+        db.execSQL(CREATE_DAILY_TABLE);
+        db.execSQL(CREATE_WEEKLY_TABLE);
+        db.execSQL(CREATE_MONTHLY_TABLE);
+        db.execSQL(CREATE_YEARLY_TABLE);
 
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d("awesomeapp", "old db version is"+ oldVersion);
+        Log.d("awesomeapp", "new db version is"+ newVersion);
+
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_YEARLY);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_MONTHLY);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_WEEKLY);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_DAILY);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_TODO);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_MEDICINE);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_AUDIO_BOOK);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_MOVIE);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_BOOK);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_MEDIA);
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EVENT);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_LOCATION);
         onCreate(db);
     }
 
@@ -255,7 +282,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
 
-
                 Event event= new Event();
                 event.set_id(Integer.parseInt(cursor.getString(0)));
                 event.set_title(cursor.getString(1));
@@ -265,7 +291,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.setLocationId(Integer.parseInt(cursor.getString(5)));
                 event.setRecurrenceType(cursor.getString(6));
                 event.setEventType(cursor.getString(7));
-                event.setResourceId(Integer.parseInt(cursor.getString(8)));
+                event.setResourceId(cursor.getInt(8));
                 event.setNotify(Boolean.parseBoolean(cursor.getString(9)));
 
                 eventList.add(event);
@@ -294,7 +320,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(EVENT_KEY_LOCATION_ID, event.getLocationId());
         values.put(EVENT_KEY_RECURRENCE_TYPE, event.getRecurrenceType());
         values.put(EVENT_KEY_EVENT_TYPE, event.getEventType());
-        values.put(EVENT_KEY_RESOURCE_ID, event.getEventType());
+        values.put(EVENT_KEY_RESOURCE_ID, event.getResourceId());
         values.put(EVENT_KEY_NOTIFY, event.isNotify());
 
         db.insert(TABLE_EVENT, null, values);
@@ -485,6 +511,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Location location= new Location(cursor.getInt(0), cursor.getFloat(1), cursor.getFloat(2), cursor.getString(3));
         db.close();
         return location;
+    }
+
+    public List getAllLocations(){
+        List<Location> locationList= new ArrayList<Location>();
+        String selectQuery= "SELECT * FROM "+ TABLE_LOCATION;
+
+        SQLiteDatabase db= this.getWritableDatabase();
+        Cursor cursor= db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Location location= new Location();
+
+                location.setLat(cursor.getFloat(1));
+                location.setLon(cursor.getFloat(2));
+                location.setAddress(cursor.getString(3));
+
+                locationList.add(location);
+            }
+            while (cursor.moveToNext());
+        }
+
+        db.close();
+        return locationList;
     }
 
 
