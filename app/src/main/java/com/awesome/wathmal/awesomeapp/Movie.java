@@ -60,6 +60,10 @@ public class Movie {
         this.title = title;
     }
 
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
     public void setDuration(int duration) {
         this.duration = duration;
     }

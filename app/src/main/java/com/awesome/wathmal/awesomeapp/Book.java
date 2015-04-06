@@ -11,6 +11,8 @@ public class Book {
     private static final String BOOK_KEY_CURRENT_PAGE= "current_page";
     private static final String BOOK_KEY_EVENT_ID= "event_id";
     */
+
+    // change this to ISBN
     private int id;
     private String title;
     private int pages;
