@@ -15,12 +15,29 @@
         <item>dashboard</item>
         <item>events</item>
         <item>books</item>
+        <item>medicines</item>
+        <item>movies</item>
+        <item>audio books</item>
+    </string-array>
+    <string-array name="event_types">
+        <item>event</item>
+        <item>book</item>
+        <item>medicine</item>
+        <item>movie</item>
+        <item>audio book</item>
+    </string-array>
+    <string-array name="recurrence_types">
+        <item>todo</item>
+        <item>daily</item>
+        <item>weekly</item>
+        <item>monthly</item>
+        <item>yearly</item>
     </string-array>
 
     <string name="title_activity_add_event">add new event</string>
     <string name="hello_world">hello world!</string>
-    
-    
     <string name="add_title">add event title</string>
     <string name="add_description">add description to event</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

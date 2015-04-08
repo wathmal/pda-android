@@ -22,120 +22,121 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // all static variables
     // database version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 7;
 
     // db name
     private static final String DATABASE_NAME = "pdaproject";
 
     // event table name
-    private static final String TABLE_EVENT = "event";
+    public static final String TABLE_EVENT = "event";
 
     // todo events table name
-    private static final String TABLE_TODO = "todo_events";
+    public static final String TABLE_TODO = "todo_events";
     // daily events table name
-    private static final String TABLE_DAILY = "daily_events";
+    public static final String TABLE_DAILY = "daily_events";
 
     // weekly events table name
-    private static final String TABLE_WEEKLY = "weekly_events";
+    public static final String TABLE_WEEKLY = "weekly_events";
     // monthly events table name
-    private static final String TABLE_MONTHLY = "monthly_events";
+    public static final String TABLE_MONTHLY = "monthly_events";
     // yearly events table name
-    private static final String TABLE_YEARLY = "yearly_events";
+    public static final String TABLE_YEARLY = "yearly_events";
 
     // location table name
-    private static final String TABLE_LOCATION= "location";
+    public static final String TABLE_LOCATION= "location";
     // media table name
-    private static final String TABLE_MEDIA= "media";
+    public static final String TABLE_MEDIA= "media";
     // medicine table name
-    private static final String TABLE_MEDICINE= "medicine";
+    public static final String TABLE_MEDICINE= "medicine";
     // book table name
-    private static final String TABLE_BOOK= "book";
+    public static final String TABLE_BOOK= "book";
 
     // movie table name
-    private static final String TABLE_MOVIE= "movie";
+    public static final String TABLE_MOVIE= "movie";
     // audio book table name
-    private static final String TABLE_AUDIO_BOOK= "audio_book";
+    public static final String TABLE_AUDIO_BOOK= "audio_book";
 
 
 
 
 
     // event table columns names
-    private static final String EVENT_KEY_ID = "id";
-    private static final String EVENT_KEY_TITLE = "title";
-    private static final String EVENT_KEY_DESC = "description";
-    private static final String EVENT_KEY_DUE_DATE = "due_date";
-    private static final String EVENT_KEY_REPEATED = "repeated";
-    private static final String EVENT_KEY_LOCATION_ID= "location_id";
-    private static final String EVENT_KEY_RECURRENCE_TYPE= "recurrence_type";
-    private static final String EVENT_KEY_EVENT_TYPE= "event_type";
-    private static final String EVENT_KEY_RESOURCE_ID= "resource_id";
-    private static final String EVENT_KEY_NOTIFY= "notify";
+    public static final String EVENT_KEY_ID = "id";
+    public static final String EVENT_KEY_TITLE = "title";
+    public static final String EVENT_KEY_DESC = "description";
+    public static final String EVENT_KEY_DUE_DATE = "due_date";
+    public static final String EVENT_KEY_REPEATED = "repeated";
+    public static final String EVENT_KEY_LOCATION_ID= "location_id";
+    public static final String EVENT_KEY_RECURRENCE_TYPE= "recurrence_type";
+    public static final String EVENT_KEY_EVENT_TYPE= "event_type";
+    public static final String EVENT_KEY_RESOURCE_ID= "resource_id";
+    public static final String EVENT_KEY_NOTIFY= "notify";
 
     // location table column names
-    private static final String LOCATION_KEY_ID= "loc_id";
-    private static final String LOCATION_KEY_LAT= "lat";
-    private static final String LOCATION_KEY_LONG= "long";
-    private static final String LOCATION_KEY_ADDRESS= "address";
+    public static final String LOCATION_KEY_ID= "loc_id";
+    public static final String LOCATION_KEY_LAT= "lat";
+    public static final String LOCATION_KEY_LONG= "long";
+    public static final String LOCATION_KEY_ADDRESS= "address";
 
 
     // media table column names
-    private static final String MEDIA_KEY_ID= "media_id";
-//    private static final String MEDIA_KEY_TITLE= "title";
-//    private static final String MEDIA_KEY_DURATION= "duration";
-    private static final String MEDIA_KEY_TYPE= "media_type";
-    private static final String MEDIA_KEY_RESOURCE_ID= "resource_id";
-    private static final String MEDIA_KEY_EVENT_ID= "event_id";
+    public static final String MEDIA_KEY_ID= "media_id";
+    //    public static final String MEDIA_KEY_TITLE= "title";
+//    public static final String MEDIA_KEY_DURATION= "duration";
+    public static final String MEDIA_KEY_TYPE= "media_type";
+    public static final String MEDIA_KEY_RESOURCE_ID= "resource_id";
+    public static final String MEDIA_KEY_EVENT_ID= "event_id";
 
     // medicine table column names
-    private static final String MEDICINE_KEY_ID= "medicine_id";
-    private static final String MEDICINE_KEY_NAME= "name";
-    private static final String MEDICINE_KEY_DOSAGE= "dosage";
-    private static final String MEDICINE_KEY_EVENT_ID= "event_id";
+    public static final String MEDICINE_KEY_ID= "medicine_id";
+    public static final String MEDICINE_KEY_NAME= "name";
+    public static final String MEDICINE_KEY_DOSAGE= "dosage";
+    public static final String MEDICINE_KEY_EVENT_ID= "event_id";
 
 
     // book table column names
-    private static final String BOOK_KEY_ID= "book_id";
-    private static final String BOOK_KEY_TITLE= "title";
-    private static final String BOOK_KEY_PAGES= "pages";
-    private static final String BOOK_KEY_CURRENT_PAGE= "current_page";
-    private static final String BOOK_KEY_EVENT_ID= "event_id";
+    public static final String BOOK_KEY_ID= "book_id";
+    public static final String BOOK_KEY_TITLE= "title";
+    public static final String BOOK_KEY_PAGES= "pages";
+    public static final String BOOK_KEY_CURRENT_PAGE= "current_page";
+    public static final String BOOK_KEY_EVENT_ID= "event_id";
 
     // movie table columns
-    private static final String MOVIE_KEY_IMDB_ID= "imdb_id";
-    private static final String MOVIE_KEY_TITLE= "title";
-    private static final String MOVIE_KEY_DURATION= "duration";
-    private static final String MOVIE_KEY_CURRENT_TIME= "current_time";
-    private static final String MOVIE_KEY_MEDIA_ID= "media_id";
+    public static final String MOVIE_KEY_ID= "id";
+    public static final String MOVIE_KEY_IMDB_ID= "imdb_id";
+    public static final String MOVIE_KEY_TITLE= "title";
+    public static final String MOVIE_KEY_DURATION= "duration";
+    public static final String MOVIE_KEY_CURRENT_TIME= "current_time";
+    public static final String MOVIE_KEY_MEDIA_ID= "media_id";
 
 
     // audio book table columns
-    private static final String AUDIO_BOOK_ID= "audio_book_id";
-    private static final String AUDIO_BOOK_TITLE= "title";
-    private static final String AUDIO_BOOK_DURATION= "duration";
-    private static final String AUDIO_BOOK_CURR_TIME= "current_time";
-    private static final String AUDIO_BOOK_MEDIA_ID= "media_id";
+    public static final String AUDIO_BOOK_ID= "audio_book_id";
+    public static final String AUDIO_BOOK_TITLE= "title";
+    public static final String AUDIO_BOOK_DURATION= "duration";
+    public static final String AUDIO_BOOK_CURR_TIME= "current_time";
+    public static final String AUDIO_BOOK_MEDIA_ID= "media_id";
 
 
     // todo table columns
-    private static final String TODO_ID= "todo_id";
-    private static final String TODO_EVENT_ID= "event_id";
+    public static final String TODO_ID= "todo_id";
+    public static final String TODO_EVENT_ID= "event_id";
 
     // daily table columns
-    private static final String DAILY_ID= "daily_id";
-    private static final String DAILY_EVENT_ID= "event_id";
+    public static final String DAILY_ID= "daily_id";
+    public static final String DAILY_EVENT_ID= "event_id";
 
     // weekly table columns
-    private static final String WEEKLY_ID= "monthly_id";
-    private static final String WEEKLY_EVENT_ID= "event_id";
+    public static final String WEEKLY_ID= "monthly_id";
+    public static final String WEEKLY_EVENT_ID= "event_id";
 
     // monthly table columns
-    private static final String MONTHLY_ID= "monthly_id";
-    private static final String MONTHLY_EVENT_ID= "event_id";
+    public static final String MONTHLY_ID= "monthly_id";
+    public static final String MONTHLY_EVENT_ID= "event_id";
 
     // yearly table columns
-    private static final String YEARLY_ID= "yearly_id";
-    private static final String YEARLY_EVENT_ID= "event_id";
+    public static final String YEARLY_ID= "yearly_id";
+    public static final String YEARLY_EVENT_ID= "event_id";
 
 
     public DatabaseHandler(Context context) {
@@ -149,7 +150,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 LOCATION_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
                 LOCATION_KEY_LAT+ " FLOAT," +
                 LOCATION_KEY_LONG+ " FLOAT," +
-                LOCATION_KEY_ADDRESS + "TEXT"
+                LOCATION_KEY_ADDRESS + " TEXT"
                 +")";
 
 
@@ -187,7 +188,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
         String CREATE_MOVIE_TABLE= "CREATE TABLE "+ TABLE_MOVIE+ "("+
-                MOVIE_KEY_IMDB_ID+ " VARCHAR(11) PRIMARY KEY NOT NULL,"+
+                MOVIE_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
+                MOVIE_KEY_IMDB_ID+ " VARCHAR(11) UNIQUE NOT NULL,"+
                 MOVIE_KEY_TITLE+ " VARCHAR(200),"+
                 MOVIE_KEY_DURATION+ " INTEGER,"+
                 MOVIE_KEY_CURRENT_TIME+ " INTEGER,"+
@@ -203,7 +205,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 +")";
 
         String CREATE_MEDICINE_TABLE= "CREATE TABLE "+ TABLE_MEDICINE +"("+
-                MEDICINE_KEY_ID+ "INTEGER PRIMARY KEY NOT NULL,"+
+                MEDICINE_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
                 MEDICINE_KEY_NAME+ " VARCHAR(100),"+
                 MEDICINE_KEY_DOSAGE+ " VARCHAR(50),"+
                 MEDICINE_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
@@ -274,7 +276,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<Event> getAllEvents(){
         List<Event> eventList= new ArrayList<Event>();
-        String selectQuery= "SELECT * FROM "+ TABLE_EVENT;
+        String selectQuery= "SELECT * FROM "+ TABLE_EVENT+" ORDER BY "+EVENT_KEY_DUE_DATE+" DESC";
 
         SQLiteDatabase db= this.getWritableDatabase();
         Cursor cursor= db.rawQuery(selectQuery, null);
@@ -305,10 +307,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public void addEvent(Event event){
+    public long addEvent(Event event){
         SQLiteDatabase db= this.getWritableDatabase();
 
-        DateFormat df= new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat df= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
 
 
         ContentValues values= new ContentValues();
@@ -323,9 +325,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(EVENT_KEY_RESOURCE_ID, event.getResourceId());
         values.put(EVENT_KEY_NOTIFY, event.isNotify());
 
-        db.insert(TABLE_EVENT, null, values);
+        long rowId= db.insert(TABLE_EVENT, null, values);
         db.close();
-
+        return rowId;
     }
 
 
@@ -337,7 +339,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db= this.getWritableDatabase();
 
-        DateFormat df= new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat df= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
         ContentValues values= new ContentValues();
         values.put(EVENT_KEY_TITLE, event.get_title());
         values.put(EVENT_KEY_DESC, event.get_description());
@@ -379,7 +381,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addMedia(Media media){
+    public long addMedia(Media media){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
@@ -387,13 +389,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(MEDIA_KEY_RESOURCE_ID, media.getResourceId());
         values.put(MEDIA_KEY_EVENT_ID, media.getEventId());
 
-        db.insert(TABLE_MEDIA, null, values);
+        long rowId= db.insert(TABLE_MEDIA, null, values);
         db.close();
-
+        return rowId;
     }
 
 
-    public void addMedicine(Medicine medicine){
+    public long addMedicine(Medicine medicine){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
@@ -401,11 +403,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(MEDICINE_KEY_DOSAGE, medicine.getDosage());
         values.put(MEDICINE_KEY_EVENT_ID, medicine.getEventId());
 
-        db.insert(TABLE_MEDICINE, null, values);
+        long rowId= db.insert(TABLE_MEDICINE, null, values);
         db.close();
+        return rowId;
     }
 
-    public void addBook(Book book){
+    public int updateMedicineEventId(int medicineId, int eventId){
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        ContentValues values= new ContentValues();
+        values.put(MEDICINE_KEY_EVENT_ID, eventId);
+        /*
+        db.update(TABLE_EVENT, values, EVENT_KEY_ID+ " = ?", new String[]{String.valueOf(event.get_id())});
+        * */
+        return db.update(TABLE_MEDICINE, values, MEDICINE_KEY_ID+ " = ?", new String[]{String.valueOf(medicineId)});
+     }
+
+    public long addBook(Book book){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
@@ -414,11 +428,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(BOOK_KEY_CURRENT_PAGE, book.getCurrentPage());
         values.put(BOOK_KEY_EVENT_ID, book.getEventId());
 
-        db.insert(TABLE_BOOK, null, values);
+        long rowId= db.insert(TABLE_BOOK, null, values);
         db.close();
+        return rowId;
     }
 
-    public void addMovie(Movie movie){
+    /*public int updateBookEventId(int bookId, int eventId){
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        ContentValues values= new ContentValues();
+        values.put(BOOK_KEY_EVENT_ID, eventId);
+
+        return db.update(TABLE_BOOK, values, BOOK_KEY_ID+ " = ?", new String[]{String.valueOf(bookId)});
+    }*/
+
+    public int updateEventIdOfATable(String tableName, String idColumnNameOfTable, String eventIdColumnName, int rowId, int eventId){
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        ContentValues values= new ContentValues();
+        values.put(eventIdColumnName, eventId);
+        return db.update(tableName, values, idColumnNameOfTable+ " = ?", new String[]{String.valueOf(rowId)});
+    }
+
+    public long addMovie(Movie movie){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
@@ -428,11 +460,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(MOVIE_KEY_CURRENT_TIME, movie.getCurrentTime());
         values.put(MOVIE_KEY_MEDIA_ID, movie.getMediaId());
 
-        db.insert(TABLE_MOVIE, null, values);
+        long rowId= db.insert(TABLE_MOVIE, null, values);
         db.close();
+        return rowId;
     }
 
-    public void addAudioBook(AudioBook audioBook){
+    public long addAudioBook(AudioBook audioBook){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
@@ -441,59 +474,64 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(AUDIO_BOOK_CURR_TIME, audioBook.getCurrentTime());
         values.put(AUDIO_BOOK_MEDIA_ID, audioBook.getMediaId());
 
-        db.insert(TABLE_AUDIO_BOOK, null, values);
+        long rowId= db.insert(TABLE_AUDIO_BOOK, null, values);
         db.close();
-
+        return rowId;
     }
 
-    public void addTodo(Todo todo){
+    public long addTodo(Todo todo){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
         values.put(TODO_EVENT_ID, todo.getEventId());
 
-        db.insert(TABLE_TODO, null, values);
+        long rowId= db.insert(TABLE_TODO, null, values);
         db.close();
+        return rowId;
     }
 
-    public void addDaily(Daily daily){
+    public long addDaily(Daily daily){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
         values.put(DAILY_EVENT_ID, daily.getEventId());
 
-        db.insert(TABLE_DAILY, null, values);
+        long rowId= db.insert(TABLE_DAILY, null, values);
         db.close();
+        return rowId;
     }
 
-    public void addWeekly(Weekly weekly){
+    public long addWeekly(Weekly weekly){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
         values.put(WEEKLY_EVENT_ID, weekly.getEventId());
 
-        db.insert(TABLE_WEEKLY, null, values);
+        long rowId=db.insert(TABLE_WEEKLY, null, values);
         db.close();
+        return rowId;
     }
 
-    public void addMonthly(Monthly monthly){
+    public long addMonthly(Monthly monthly){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
         values.put(MONTHLY_EVENT_ID, monthly.getEventId());
 
-        db.insert(TABLE_MONTHLY, null, values);
+        long rowId=db.insert(TABLE_MONTHLY, null, values);
         db.close();
+        return rowId;
     }
 
-    public void addYearly(Yearly yearly){
+    public long addYearly(Yearly yearly){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues values= new ContentValues();
         values.put(YEARLY_EVENT_ID, yearly.getEventId());
 
-        db.insert(TABLE_YEARLY, null, values);
+        long rowId=db.insert(TABLE_YEARLY, null, values);
         db.close();
+        return rowId;
     }
 
 
@@ -523,7 +561,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Location location= new Location();
-
+                location.setId(cursor.getInt(0));
                 location.setLat(cursor.getFloat(1));
                 location.setLon(cursor.getFloat(2));
                 location.setAddress(cursor.getString(3));
@@ -560,7 +598,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.setLocationId(Integer.parseInt(cursor.getString(5)));
                 event.setRecurrenceType(cursor.getString(6));
                 event.setEventType(cursor.getString(7));
-                event.setResourceId(Integer.parseInt(cursor.getString(8)));
+                event.setEventResourceId(Integer.parseInt(cursor.getString(8)));
                 event.setNotify(Boolean.parseBoolean(cursor.getString(9)));
 
                 eventList.add(event);
@@ -609,11 +647,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Movie movie= new Movie();
-                movie.setImdbId(cursor.getString(0));
-                movie.setTitle(cursor.getString(1));
-                movie.setDuration(cursor.getInt(2));
-                movie.setCurrentTime(cursor.getInt(3));
-                movie.setMediaId(cursor.getInt(4));
+                movie.setId(cursor.getInt(0));
+                movie.setImdbId(cursor.getString(1));
+                movie.setTitle(cursor.getString(2));
+                movie.setDuration(cursor.getInt(3));
+                movie.setCurrentTime(cursor.getInt(4));
+                movie.setMediaId(cursor.getInt(5));
 
                 movieList.add(movie);
             }
@@ -659,14 +698,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Book book= new Book();
+                book.setId(cursor.getInt(0));
                 book.setTitle(cursor.getString(1));
                 book.setPages(cursor.getInt(2));
                 book.setCurrentPage(cursor.getInt(3));
                 book.setEventId(cursor.getInt(4));
+
+                bookList.add(book);
             }
             while(cursor.moveToNext());
         }
         db.close();
+
+        Log.d("database", "book table length= "+ bookList.size());
         return bookList;
     }
 
@@ -753,6 +797,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return yearlyList;
 
+    }
+
+    public int getSizeOfATable(String tableName, String nameOfIdColumn){
+        String query= "SELECT COUNT(*) FROM "+tableName+" ORDER BY "+nameOfIdColumn;
+        SQLiteDatabase db= this.getWritableDatabase();
+        Cursor cursor= db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        int length= cursor.getInt(0);
+        db.close();
+        return length;
     }
 
 }

@@ -7,31 +7,17 @@
     tools:context="com.awesome.wathmal.awesomeapp.AddEventActivity">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_title"
-        android:id="@+id/textView"
-        android:textColor="@android:color/black"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextEventTitle"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/textView"
-        android:backgroundTint="@color/primarydark" />
+        android:backgroundTint="@color/primarydark"
+        android:editable="true"
+        android:enabled="true"
+        android:hint="name"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_description"
-        android:textColor="@android:color/black"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/editTextEventTitle"
-        android:layout_centerHorizontal="true" />
+        />
 
     <EditText
         android:layout_width="match_parent"
@@ -40,50 +26,145 @@
         android:textColor="@android:color/black"
         android:ems="10"
         android:id="@+id/editTextEventDescription"
-        android:layout_below="@+id/textView2"
-        android:backgroundTint="@color/primarydark" />
+        android:backgroundTint="@color/primarydark"
+        android:layout_below="@+id/editTextEventTitle"
+        android:hint="description"
+        />
 
 
 
-    <Button
+
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextEventDescription"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="36dp"
+        android:baselineAligned="false"
+        android:id="@+id/linearLayout">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="add date"
+            android:id="@+id/buttonAddDate"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="add time"
+            android:id="@+id/buttonAddTime"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="15-04-07 13:55"
+        android:id="@+id/textViewDateAndTime"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:textSize="34sp"
+        android:textColor="@color/primary"
+        android:gravity="center|fill_vertical"
+        android:fontFamily="sans-serif-light"
+        android:focusableInTouchMode="false" />
+
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="save"
-        android:onClick="saveButtonHandler"
+        android:id="@+id/switchRepeated"
+        android:layout_below="@+id/editTextEventDescription"
+        android:layout_alignParentEnd="true"
+        android:checked="false"
+        android:text="repeated" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewDateAndTime"
+        android:id="@+id/linearLayout2">
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerEventType"
+            android:spinnerMode="dropdown"
+            android:layout_weight="1" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerRecurrenceType"
+            android:spinnerMode="dropdown"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout2"
+        android:paddingTop="5dp"
+        android:id="@+id/linearLayout3">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_location_on_grey600_18dp"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="location"
+            android:id="@+id/textView"
+            android:gravity="center_vertical|center"
+            android:paddingRight="20dp"
+            android:paddingLeft="10dp" />
+
+        <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerLocation"
+
+            android:spinnerMode="dropdown" />
+
+    </LinearLayout>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="notify"
+        android:id="@+id/switchNotify"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignEnd="@+id/linearLayout3"
+        android:checked="false"
+        android:layout_alignStart="@+id/switchRepeated" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add event"
         android:id="@+id/buttonAddEvent"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/switchNotify"
+        android:onClick="saveButtonHandler"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="add date"
-        android:id="@+id/buttonAddDate"
-        android:layout_below="@+id/editTextEventDescription"
-        android:layout_toEndOf="@+id/editTextDate" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:textAlignment="center"
-
-        android:textColor="@android:color/black"
-        android:id="@+id/editTextDate"
-        android:layout_alignBottom="@+id/buttonAddDate"
-        android:layout_alignEnd="@+id/buttonAddEvent"
-        android:layout_alignParentEnd="false"
-        android:autoText="false"
-        android:backgroundTint="@color/primarydark" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="repeated"
-        android:textColor="@android:color/black"
-        android:id="@+id/checkBoxRepeated"
-        android:layout_above="@+id/buttonAddEvent"
-        android:layout_centerHorizontal="true"
-        android:buttonTint="@color/primarydark" />
 </RelativeLayout>

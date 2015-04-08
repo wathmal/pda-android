@@ -7,4 +7,6 @@ public class information {
     int iconid;
     String title;
     String notify;
+
+
 }

@@ -3,7 +3,7 @@ package com.awesome.wathmal.awesomeapp;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
 
@@ -38,6 +39,8 @@ public class MainActivity extends Activity
      */
     private CharSequence mTitle;
     private DatabaseHandler dh;
+    private String adapterEventType;
+    private Context context;
     public MainActivity() {
     }
 
@@ -49,7 +52,7 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-
+        mNavigationDrawerFragment.setContext(context);
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -60,27 +63,20 @@ public class MainActivity extends Activity
         mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
 
         this.dh= new DatabaseHandler(this);
+        this.context= this;
 
-        /*
-        Location loc1= new Location((float)6.829237,(float)80.0993981,"unknown location");
-        dh.addLocation(loc1);
-
-        */
-        /*
-        Event e1= new Event("TEST EVENT", "testing event database sqlite", new Date(),false);
-        Event e2= new Event("තාවකාලික ඔටුවා", "සිංහල සහයෝගය සොයා බැලීමට", new Date(),false);
-
-
-        dh.addEvent(e1);
-        dh.addEvent(e2);
-        Log.d("sqlite", "inserting values");
-        */
         List<Event> allEvents= dh.getAllEvents();
-
+        this.adapterEventType= DatabaseHandler.TABLE_EVENT;
 
         mRecyclerView= (RecyclerView)findViewById(R.id.my_recycler_view);
         // Attach recycler view to the floating action button
         FloatingActionButton fab= (FloatingActionButton) findViewById(R.id.action_addEvent);
+        FloatingActionButton fabMedicineButton= (FloatingActionButton)findViewById(R.id.action_medicine);
+
+        FloatingActionButton fabMovieButton= (FloatingActionButton)findViewById(R.id.action_movie);
+        FloatingActionButton fabAudioBookButton= (FloatingActionButton)findViewById(R.id.action_audio_book);
+        FloatingActionButton fabBookButton= (FloatingActionButton)findViewById(R.id.action_book);
+
 //        com.melnykov.fab.FloatingActionButton fab1= (com.melnykov.fab.FloatingActionButton) findViewById(R.id.action_addEvent);
 //        fab1.attachToRecyclerView(mRecyclerView);
 
@@ -91,7 +87,46 @@ public class MainActivity extends Activity
                 MainActivity.this.startActivity(addEventIntent);
             }
         });
+        fabMedicineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addMedicineIntent= new Intent(MainActivity.this, AddEventActivity.class);
+                addMedicineIntent.putExtra("eventType", 2);
 
+                MainActivity.this.startActivity(addMedicineIntent);
+
+            }
+        });
+        fabMovieButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(MainActivity.this, AddEventActivity.class);
+                intent.putExtra("eventType", 3);
+
+                MainActivity.this.startActivity(intent);
+
+            }
+        });
+        fabAudioBookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(MainActivity.this, AddEventActivity.class);
+                intent.putExtra("eventType", 4);
+
+                MainActivity.this.startActivity(intent);
+
+            }
+        });
+        fabBookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(MainActivity.this, AddEventActivity.class);
+                intent.putExtra("eventType", 1);
+
+                MainActivity.this.startActivity(intent);
+
+            }
+        });
 
 
 
@@ -105,7 +140,7 @@ public class MainActivity extends Activity
 
         //String a[]= {"hello wathmal this is awesome", "i am awesome","කාලේ මටයි පින පෑදිච්චී", "සිංහල වැඩනේ"};
 //        int b[]= {};
-        ContentAdapter contentAdapter= new ContentAdapter(allEvents);
+        ContentAdapter contentAdapter= new ContentAdapter(context, allEvents, this.adapterEventType);
         mRecyclerView.setAdapter(contentAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -118,21 +153,99 @@ public class MainActivity extends Activity
             @Override
             public void onRefresh() {
 
-                List<Event> allEvents= dh.getAllEvents();
-                ContentAdapter contentAdapter= new ContentAdapter(allEvents);
-                mRecyclerView.setAdapter(contentAdapter);
+                /*if else block to refresh particular event type*/
+                if(adapterEventType.equals(DatabaseHandler.TABLE_EVENT)){
+                    List<Event> allEvents= dh.getAllEvents();
+                    ContentAdapter contentAdapter= new ContentAdapter(context, allEvents, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                }
+
+                else if(adapterEventType.equals(DatabaseHandler.TABLE_BOOK)){
+                    List<Book> allBooks= dh.getAllBooks();
+                    ContentAdapter contentAdapter= new ContentAdapter(context, allBooks, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                }
+
+                else if(adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)){
+
+                    List<Medicine> allMedicines= dh.getAllMedicines();
+                    ContentAdapter contentAdapter= new ContentAdapter(context, allMedicines, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                }
+
+                else if(adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)){
+
+                    List<Movie> allMovies= dh.getAllMovies();
+                    ContentAdapter contentAdapter= new ContentAdapter(context, allMovies, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                }
+
+                else if(adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
+
+                    List<AudioBook> allAudioBooks= dh.getAllAudioBooks();
+                    ContentAdapter contentAdapter= new ContentAdapter(context, allAudioBooks, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                }
+
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
+    public void refreshAdapter(int adapterPosition){
+        //this.adapterEventType= adapterEventType;
+        if(adapterPosition == 1){
+            this.adapterEventType= DatabaseHandler.TABLE_EVENT;
+
+            List<Event> allEvents= dh.getAllEvents();
+            ContentAdapter contentAdapter= new ContentAdapter(this, allEvents, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        }
+
+        else if(adapterPosition == 2){
+            this.adapterEventType= DatabaseHandler.TABLE_BOOK;
+
+            List<Book> allBooks= dh.getAllBooks();
+            ContentAdapter contentAdapter= new ContentAdapter(context, allBooks, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        }
+
+        else if(adapterPosition == 3){
+            this.adapterEventType= DatabaseHandler.TABLE_MEDICINE;
+
+            List<Medicine> allMedicines= dh.getAllMedicines();
+            ContentAdapter contentAdapter= new ContentAdapter(context, allMedicines, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        }
+
+        else if(adapterPosition == 4){
+            this.adapterEventType= DatabaseHandler.TABLE_MOVIE;
+
+            List<Movie> allMovies= dh.getAllMovies();
+            ContentAdapter contentAdapter= new ContentAdapter(context, allMovies, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        }
+
+        else if(adapterPosition == 5){
+            this.adapterEventType= DatabaseHandler.TABLE_AUDIO_BOOK;
+
+            List<AudioBook> allAudioBooks= dh.getAllAudioBooks();
+            ContentAdapter contentAdapter= new ContentAdapter(context, allAudioBooks, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        }
+
+
+    }
+
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
+        /*FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+                .commit();*/
+        Toast.makeText(this, "ha mallii ", Toast.LENGTH_SHORT).show();
     }
 
     public void onSectionAttached(int number) {

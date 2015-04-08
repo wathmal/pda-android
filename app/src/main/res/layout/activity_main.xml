@@ -68,17 +68,16 @@
             android:layout_marginEnd="16dp">
 
 
-
             <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_book"
+                android:id="@+id/action_audio_book"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/pink"
-                fab:fab_colorPressed="@color/pink_pressed"
-                fab:fab_title="book"
+                fab:fab_colorNormal="@color/primary"
                 fab:fab_size="mini"
-                fab:fab_icon="@drawable/ic_book_white_24dp"
+                fab:fab_title="audio book"
+                fab:fab_icon="@drawable/ic_queue_music_white_24dp"
                 />
+
 
             <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
                 android:id="@+id/action_movie"
@@ -86,7 +85,7 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/primary"
                 fab:fab_size="mini"
-                fab:fab_title="media"
+                fab:fab_title="movie"
                 fab:fab_icon="@drawable/ic_movie_white_24dp"
                 />
 
@@ -97,7 +96,17 @@
                 fab:fab_colorNormal="@android:color/holo_orange_dark"
                 fab:fab_size="mini"
                 fab:fab_title="medicine"
-                fab:fab_icon="@drawable/ic_gamepad_white_24dp"
+                fab:fab_icon="@drawable/ic_pill_white_24dp"
+                />
+            <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/pink"
+                fab:fab_colorPressed="@color/pink_pressed"
+                fab:fab_title="book"
+                fab:fab_size="mini"
+                fab:fab_icon="@drawable/ic_book_white_24dp"
                 />
 
             <net.i2p.android.ext.floatingactionbutton.FloatingActionButton

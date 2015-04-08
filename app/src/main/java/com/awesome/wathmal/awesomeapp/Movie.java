@@ -11,7 +11,7 @@ public class Movie {
     private static final String MOVIE_KEY_CURRENT_TIME= "current_time";
     private static final String MOVIE_KEY_MEDIA_ID= "media_id";
     */
-
+    private int id;
     private String imdbId;
     private String title;
     private int duration;
@@ -74,5 +74,22 @@ public class Movie {
 
     public void setMediaId(int mediaId) {
         this.mediaId = mediaId;
+    }
+
+    public Movie(int id, String imdbId, String title, int duration, int currentTime, int mediaId) {
+        this.id = id;
+        this.imdbId = imdbId;
+        this.title = title;
+        this.duration = duration;
+        this.currentTime = currentTime;
+        this.mediaId = mediaId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

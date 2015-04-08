@@ -1,5 +1,7 @@
 package com.awesome.wathmal.awesomeapp;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -96,12 +98,18 @@ public class Event {
     }
 
     public void set_date(String date) {
-        DateFormat df= new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat df= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
         Date fdate= null;
         try {
             fdate = df.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+            DateFormat dateOnly= new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            try {
+                fdate = dateOnly.parse(date);
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            Log.e("exception", e.getMessage());
         }
         this._date = fdate;
     }

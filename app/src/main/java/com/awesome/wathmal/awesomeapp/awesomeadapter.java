@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +27,8 @@ public class awesomeadapter extends RecyclerView.Adapter<awesomeadapter.myviewho
         this.data= data;
         this.context= context;
         inflater= LayoutInflater.from(context);
+
+
     }
 
     @Override
@@ -61,7 +62,12 @@ public class awesomeadapter extends RecyclerView.Adapter<awesomeadapter.myviewho
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(context, "item clicked at "+ getPosition(),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "item clicked at " + getPosition(), Toast.LENGTH_SHORT).show();
+            ((MainActivity)context).refreshAdapter(getPosition());
+
+            /*if(getPosition() == 2){
+                ((MainActivity)context).refreshAdapter(DatabaseHandler.TABLE_BOOK);
+            }*/
         }
 
 

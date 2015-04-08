@@ -4,6 +4,7 @@ package com.awesome.wathmal.awesomeapp;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -63,8 +64,12 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-
+    private Context context;
     public NavigationDrawerFragment() {
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -128,10 +133,24 @@ public class NavigationDrawerFragment extends Fragment {
 
 
     public List<information> getData(){
+
+        /*icons are hardcoded!!*/
         List<information> data= new ArrayList<>();
-        int []icons= {R.drawable.ic_dashboard_grey600_24dp, R.drawable.ic_event_grey600_24dp, R.drawable.ic_book_grey600_24dp};
+        int []icons= {R.drawable.ic_dashboard_grey600_24dp, R.drawable.ic_event_grey600_24dp, R.drawable.ic_book_grey600_24dp,
+                R.drawable.ic_pill_grey600_24dp,
+                R.drawable.ic_movie_grey600_24dp, R.drawable.ic_queue_music_grey600_24dp
+        };
+
         String []titles= getResources().getStringArray(R.array.drawer_list);
-        String []notify= {"12","","2"};
+        DatabaseHandler dh= new DatabaseHandler(getActivity());
+        String []notify= {"",
+                String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_EVENT, DatabaseHandler.EVENT_KEY_ID)),
+                String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_BOOK, DatabaseHandler.BOOK_KEY_ID)),
+                String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_MEDICINE, DatabaseHandler.MEDICINE_KEY_ID)),
+                String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_MOVIE, DatabaseHandler.MOVIE_KEY_ID)),
+                String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_AUDIO_BOOK, DatabaseHandler.AUDIO_BOOK_ID)),
+
+        };
 
         for(int i=0; i< icons.length; i++){
             information current= new information();
