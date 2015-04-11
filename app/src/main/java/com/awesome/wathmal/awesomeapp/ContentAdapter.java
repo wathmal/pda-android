@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
@@ -178,7 +177,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "viewing not implemnted yet!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "viewing not implemented yet!", Toast.LENGTH_SHORT).show();
+                    ((MainActivity)context).showViewingDialog(eventType, getPosition());
+
                 }
             });
 
@@ -187,9 +188,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
         @Override
         public boolean onLongClick(View v) {
-            //delete(getPosition());
-
-            //((MainActivity)context).openOptionsMenu();
+            /*
+            * relationship with getPosition() and item id must be used.
+            * which means if you take allItems from database, in same soring order which is showing,
+            * items.get(getPosition()) returns the clicked element!
+            * */
+            ((MainActivity)context).setContextMenu(getPosition(), eventType);
             return true;
         }
     }

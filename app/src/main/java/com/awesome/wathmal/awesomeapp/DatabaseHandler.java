@@ -1,10 +1,12 @@
 package com.awesome.wathmal.awesomeapp;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -22,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // all static variables
     // database version
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 11;
 
     // db name
     private static final String DATABASE_NAME = "pdaproject";
@@ -143,8 +145,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+
+        db.setForeignKeyConstraintsEnabled(true);
+        super.onConfigure(db);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.setForeignKeyConstraintsEnabled(true);
 
         String CREATE_LOCATION_TABLE= "CREATE TABLE "+ TABLE_LOCATION +"("+
                 LOCATION_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
@@ -174,7 +185,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 MEDIA_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
                 MEDIA_KEY_TYPE+ " VARCHAR(30) NOT NULL," +
                 MEDIA_KEY_RESOURCE_ID+ " INTEGER,"+
-                MEDIA_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                MEDIA_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
 
@@ -183,7 +194,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 BOOK_KEY_TITLE+ " VARCHAR(100),"+
                 BOOK_KEY_PAGES+ " INTEGER,"+
                 BOOK_KEY_CURRENT_PAGE+ " INTEGER,"+
-                BOOK_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                BOOK_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
 
@@ -193,7 +204,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 MOVIE_KEY_TITLE+ " VARCHAR(200),"+
                 MOVIE_KEY_DURATION+ " INTEGER,"+
                 MOVIE_KEY_CURRENT_TIME+ " INTEGER,"+
-                MOVIE_KEY_MEDIA_ID+ " INTEGER REFERENCES "+TABLE_MEDIA+"("+MEDIA_KEY_ID+") ON UPDATE CASCADE"
+                MOVIE_KEY_MEDIA_ID+ " INTEGER REFERENCES "+TABLE_MEDIA+"("+MEDIA_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
         String CREATE_AUDIO_BOOK_TABLE= "CREATE TABLE "+ TABLE_AUDIO_BOOK+ "("+
@@ -201,40 +212,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 AUDIO_BOOK_TITLE+ " VARCHAR(100),"+
                 AUDIO_BOOK_DURATION+ " INTEGER,"+
                 AUDIO_BOOK_CURR_TIME+ " INTEGER,"+
-                AUDIO_BOOK_MEDIA_ID+ " INTEGER REFERENCES "+TABLE_MEDIA+"("+MEDIA_KEY_ID+") ON UPDATE CASCADE"
+                AUDIO_BOOK_MEDIA_ID+ " INTEGER REFERENCES "+TABLE_MEDIA+"("+MEDIA_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
         String CREATE_MEDICINE_TABLE= "CREATE TABLE "+ TABLE_MEDICINE +"("+
                 MEDICINE_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
                 MEDICINE_KEY_NAME+ " VARCHAR(100),"+
                 MEDICINE_KEY_DOSAGE+ " VARCHAR(50),"+
-                MEDICINE_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                MEDICINE_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
 
         String CREATE_TODO_TABLE= "CREATE TABLE "+ TABLE_TODO +"("+
                 TODO_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                TODO_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                TODO_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
         String CREATE_DAILY_TABLE= "CREATE TABLE "+ TABLE_DAILY +"("+
                 DAILY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                DAILY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                DAILY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
         String CREATE_WEEKLY_TABLE= "CREATE TABLE "+ TABLE_WEEKLY +"("+
                 WEEKLY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                WEEKLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                WEEKLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
         String CREATE_MONTHLY_TABLE= "CREATE TABLE "+ TABLE_MONTHLY +"("+
                 MONTHLY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                MONTHLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                MONTHLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
         String CREATE_YEARLY_TABLE= "CREATE TABLE "+ TABLE_YEARLY +"("+
                 YEARLY_ID+ " INTEGER PRIMARY KEY NOT NULL,"+
-                YEARLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE"
+                YEARLY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
 
         db.execSQL(CREATE_LOCATION_TABLE);
@@ -250,13 +261,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_MONTHLY_TABLE);
         db.execSQL(CREATE_YEARLY_TABLE);
 
+        /*
+        * dummy event and location
+        * don't return this when calling getAllLocations() and getAllEvents()
+        * */
+
+        ContentValues location= new ContentValues();
+        location.put(LOCATION_KEY_LAT, 80);
+        location.put(LOCATION_KEY_LONG, 6);
+        location.put(LOCATION_KEY_ADDRESS, "test");
+
+        db.insert(TABLE_LOCATION, null, location);
+
+
+
+        ContentValues values= new ContentValues();
+        values.put(EVENT_KEY_TITLE,"");
+        values.put(EVENT_KEY_DESC, "");
+        values.put(EVENT_KEY_DUE_DATE, "");
+        values.put(EVENT_KEY_REPEATED, false);        // can pu boolean
+        // add newly updated values
+        values.put(EVENT_KEY_LOCATION_ID, 1);
+        values.put(EVENT_KEY_RECURRENCE_TYPE,"");
+        values.put(EVENT_KEY_EVENT_TYPE, "");
+        values.put(EVENT_KEY_RESOURCE_ID, 0);
+        values.put(EVENT_KEY_NOTIFY, false);
+        db.insert(TABLE_EVENT, null, values);
+
+        ContentValues media= new ContentValues();
+        media.put(MEDIA_KEY_TYPE, "");
+        media.put(MEDIA_KEY_RESOURCE_ID, 0);
+        media.put(MEDIA_KEY_EVENT_ID, 1);
+
+        db.insert(TABLE_MEDIA, null, media);
+
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d("awesomeapp", "old db version is"+ oldVersion);
-        Log.d("awesomeapp", "new db version is"+ newVersion);
+        db.setForeignKeyConstraintsEnabled(true);
+
+        Log.d("awesomeapp", "old db version is "+ oldVersion);
+        Log.d("awesomeapp", "new db version is "+ newVersion);
 
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_YEARLY);
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_MONTHLY);
@@ -276,7 +323,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<Event> getAllEvents(){
         List<Event> eventList= new ArrayList<Event>();
-        String selectQuery= "SELECT * FROM "+ TABLE_EVENT+" ORDER BY "+EVENT_KEY_DUE_DATE+" DESC";
+        String selectQuery= "SELECT * FROM "+ TABLE_EVENT+" WHERE "+EVENT_KEY_ID+" != 1"+" ORDER BY "+EVENT_KEY_DUE_DATE+" DESC";
 
         SQLiteDatabase db= this.getWritableDatabase();
         Cursor cursor= db.rawQuery(selectQuery, null);
@@ -408,6 +455,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return rowId;
     }
 
+    public int updateMedicine(Medicine medicine){
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        // can update only 2 values
+        ContentValues values= new ContentValues();
+        values.put(MEDICINE_KEY_NAME, medicine.getName());
+        values.put(MEDICINE_KEY_DOSAGE, medicine.getDosage());
+
+        return db.update(TABLE_MEDICINE, values, MEDICINE_KEY_ID+ " = ?", new String[]{String.valueOf(medicine.getId())});
+    }
+
+
     public int updateMedicineEventId(int medicineId, int eventId){
         SQLiteDatabase db= this.getWritableDatabase();
 
@@ -417,7 +476,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.update(TABLE_EVENT, values, EVENT_KEY_ID+ " = ?", new String[]{String.valueOf(event.get_id())});
         * */
         return db.update(TABLE_MEDICINE, values, MEDICINE_KEY_ID+ " = ?", new String[]{String.valueOf(medicineId)});
-     }
+    }
 
     public long addBook(Book book){
         SQLiteDatabase db= this.getWritableDatabase();
@@ -433,22 +492,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return rowId;
     }
 
-    /*public int updateBookEventId(int bookId, int eventId){
+    public int updateBook(Book book){
         SQLiteDatabase db= this.getWritableDatabase();
 
+        // can update only 3 values
         ContentValues values= new ContentValues();
-        values.put(BOOK_KEY_EVENT_ID, eventId);
+        values.put(BOOK_KEY_TITLE, book.getTitle());
+        values.put(BOOK_KEY_PAGES, book.getPages());
+        values.put(BOOK_KEY_CURRENT_PAGE, book.getCurrentPage());
 
-        return db.update(TABLE_BOOK, values, BOOK_KEY_ID+ " = ?", new String[]{String.valueOf(bookId)});
-    }*/
-
-    public int updateEventIdOfATable(String tableName, String idColumnNameOfTable, String eventIdColumnName, int rowId, int eventId){
-        SQLiteDatabase db= this.getWritableDatabase();
-
-        ContentValues values= new ContentValues();
-        values.put(eventIdColumnName, eventId);
-        return db.update(tableName, values, idColumnNameOfTable+ " = ?", new String[]{String.valueOf(rowId)});
+        return db.update(TABLE_BOOK, values, BOOK_KEY_ID+ " = ?", new String[]{String.valueOf(book.getId())});
     }
+
+
 
     public long addMovie(Movie movie){
         SQLiteDatabase db= this.getWritableDatabase();
@@ -465,6 +521,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return rowId;
     }
 
+    public int updateMovie(Movie movie){
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        // can update only 3 values
+        ContentValues values= new ContentValues();
+        values.put(MOVIE_KEY_TITLE, movie.getTitle());
+        values.put(MOVIE_KEY_DURATION, movie.getDuration());
+        values.put(MOVIE_KEY_CURRENT_TIME, movie.getCurrentTime());
+
+        return db.update(TABLE_MOVIE, values, MOVIE_KEY_ID+" = ?", new String[]{String.valueOf(movie.getId())});
+    }
+
     public long addAudioBook(AudioBook audioBook){
         SQLiteDatabase db= this.getWritableDatabase();
 
@@ -477,6 +545,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         long rowId= db.insert(TABLE_AUDIO_BOOK, null, values);
         db.close();
         return rowId;
+    }
+
+    public int updateAudioBook(AudioBook audioBook){
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        // can update only 3 values
+        ContentValues values= new ContentValues();
+        values.put(AUDIO_BOOK_TITLE, audioBook.getTitle());
+        values.put(AUDIO_BOOK_DURATION, audioBook.getDuration());
+        values.put(AUDIO_BOOK_CURR_TIME, audioBook.getCurrentTime());
+
+        return db.update(TABLE_AUDIO_BOOK, values, AUDIO_BOOK_ID+" = ?", new String[]{String.valueOf(audioBook.getId())});
     }
 
     public long addTodo(Todo todo){
@@ -553,7 +633,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List getAllLocations(){
         List<Location> locationList= new ArrayList<Location>();
-        String selectQuery= "SELECT * FROM "+ TABLE_LOCATION;
+        String selectQuery= "SELECT * FROM "+ TABLE_LOCATION +" WHERE "+LOCATION_KEY_ID+" != 1";
 
         SQLiteDatabase db= this.getWritableDatabase();
         Cursor cursor= db.rawQuery(selectQuery, null);
@@ -622,6 +702,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Medicine medicine= new Medicine();
+                medicine.setId(cursor.getInt(0));
                 medicine.setName(cursor.getString(1));
                 medicine.setDosage(cursor.getString(2));
                 medicine.setEventId(cursor.getInt(3));
@@ -674,6 +755,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 AudioBook audioBook= new AudioBook();
+                audioBook.setId(cursor.getInt(0));
                 audioBook.setTitle(cursor.getString(1));
                 audioBook.setDuration(cursor.getInt(2));
                 audioBook.setCurrentTime(cursor.getInt(3));
@@ -714,6 +796,45 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return bookList;
     }
 
+    public List getAllMedia(){
+
+        List<Media> mediaList= new ArrayList<Media>();
+        String selectQuery= "SELECT * FROM "+ TABLE_MEDIA +" WHERE "+MEDIA_KEY_ID +" != 1";
+
+        SQLiteDatabase db= this.getWritableDatabase();
+        Cursor cursor= db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Media media= new Media();
+                media.setId(cursor.getInt(0));
+                media.setType(cursor.getString(1));
+                media.setResourceId(cursor.getInt(3));
+                media.setEventId(cursor.getInt(4));
+                mediaList.add(media);
+            }
+            while(cursor.moveToNext());
+        }
+        db.close();
+
+        return mediaList;
+    }
+
+    public Media getMedia(int id){
+        String selectQuery= "SELECT * FROM "+ TABLE_MEDIA+" WHERE "+MEDIA_KEY_ID+"="+id;
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        Cursor cursor= db.query(TABLE_MEDIA, null ,MEDIA_KEY_ID+" = ?", new String[]{String.valueOf(id)}, null, null, null, "1");
+
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
+        Media media= new Media(cursor.getInt(0), cursor.getString(1), cursor.getInt(3), cursor.getInt(4));
+        db.close();
+
+        return media;
+    }
+
     public List getAllTodos(){
         List<Todo> todoList= new ArrayList<Todo>();
         String selectQuery= "SELECT * FROM "+ TABLE_TODO;
@@ -722,7 +843,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor= db.rawQuery(selectQuery, null);
         if(cursor.moveToFirst()){
             do{
-                Todo todo= new Todo(cursor.getInt(1));
+                Todo todo= new Todo(cursor.getInt(0), cursor.getInt(1));
             }
             while (cursor.moveToNext());
         }
@@ -739,7 +860,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor= db.rawQuery(selectQuery, null);
         if(cursor.moveToFirst()){
             do{
-                Daily daily= new Daily(cursor.getInt(1));
+                Daily daily= new Daily(cursor.getInt(0), cursor.getInt(1));
             }
             while (cursor.moveToNext());
         }
@@ -756,7 +877,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor= db.rawQuery(selectQuery, null);
         if(cursor.moveToFirst()){
             do{
-                Weekly weekly= new Weekly(cursor.getInt(1));
+                Weekly weekly= new Weekly(cursor.getInt(0), cursor.getInt(1));
             }
             while (cursor.moveToNext());
         }
@@ -773,7 +894,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor= db.rawQuery(selectQuery, null);
         if(cursor.moveToFirst()){
             do{
-                Monthly monthly= new Monthly(cursor.getInt(1));
+                Monthly monthly= new Monthly(cursor.getInt(0), cursor.getInt(1));
             }
             while (cursor.moveToNext());
         }
@@ -790,13 +911,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor= db.rawQuery(selectQuery, null);
         if(cursor.moveToFirst()){
             do{
-                Yearly yearly= new Yearly(cursor.getInt(1));
+                Yearly yearly= new Yearly(cursor.getInt(0), cursor.getInt(1));
             }
             while (cursor.moveToNext());
         }
         db.close();
         return yearlyList;
 
+    }
+
+    public int updateEventIdOfATable(String tableName, String idColumnNameOfTable, String eventIdColumnName, int rowId, int eventId){
+        SQLiteDatabase db= this.getWritableDatabase();
+
+        ContentValues values= new ContentValues();
+        values.put(eventIdColumnName, eventId);
+        return db.update(tableName, values, idColumnNameOfTable+ " = ?", new String[]{String.valueOf(rowId)});
     }
 
     public int getSizeOfATable(String tableName, String nameOfIdColumn){
@@ -808,6 +937,66 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int length= cursor.getInt(0);
         db.close();
         return length;
+    }
+
+    public int deleteItemFromATable(int position, String type){
+
+        if(type.equals(TABLE_BOOK)){
+            SQLiteDatabase db = this.getWritableDatabase();
+            Book book= (Book) getAllBooks().get(position);
+
+
+            // delete both won't be needed ON DELETE CASCADE
+            /*db.delete(TABLE_BOOK, BOOK_KEY_ID + " = ?",
+                    new String[] { String.valueOf(book.getId()) });*/
+            db.delete(TABLE_EVENT, EVENT_KEY_ID + " = ?",
+                    new String[] { String.valueOf(book.getEventId()) });
+            db.close();
+
+
+        }
+        else if(type.equals(TABLE_MEDICINE)){
+            Medicine medicine= (Medicine) getAllMedicines().get(position);
+            SQLiteDatabase db = this.getWritableDatabase();
+            /*db.delete(TABLE_MEDICINE, MEDICINE_KEY_ID + " = ?",
+                    new String[] { String.valueOf(medicine.getId()) });*/
+            db.delete(TABLE_EVENT, EVENT_KEY_ID + " = ?",
+                    new String[] { String.valueOf(medicine.getEventId()) });
+            db.close();
+        }
+
+        else if(type.equals(TABLE_MOVIE)){
+
+            Movie movie= (Movie) getAllMovies().get(position);
+            Media media= getMedia(movie.getMediaId());
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_EVENT, EVENT_KEY_ID + " = ?",
+                    new String[] { String.valueOf(media.getEventId()) });
+            db.close();
+        }
+
+        else if(type.equals(TABLE_AUDIO_BOOK)){
+
+            AudioBook audioBook= (AudioBook) getAllAudioBooks().get(position);
+            Media media= getMedia(audioBook.getMediaId());
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_EVENT, EVENT_KEY_ID + " = ?",
+                    new String[] { String.valueOf(media.getEventId()) });
+            db.close();
+        }
+
+        else{
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_EVENT, EVENT_KEY_ID + " = ?",
+                    new String[] { String.valueOf(getAllEvents().get(position).get_id()) });
+            db.close();
+        }
+
+
+
+        return 0;
     }
 
 }

@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:clickable="true"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_height="72dp">
+
+    android:layout_height="72dp"
+    android:background="?android:attr/selectableItemBackground"
+    >
 
     <ImageView
         android:id="@+id/contentIcon"

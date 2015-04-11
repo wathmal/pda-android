@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextEventDescription"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginTop="36dp"
         android:baselineAligned="false"
         android:id="@+id/linearLayout">
@@ -72,6 +73,7 @@
         android:id="@+id/textViewDateAndTime"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:textSize="34sp"
         android:textColor="@color/primary"
         android:gravity="center|fill_vertical"
@@ -84,6 +86,7 @@
         android:id="@+id/switchRepeated"
         android:layout_below="@+id/editTextEventDescription"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:checked="false"
         android:text="repeated" />
 
@@ -116,6 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout2"
         android:paddingTop="5dp"
         android:id="@+id/linearLayout3">
@@ -126,7 +130,9 @@
             android:id="@+id/imageView"
             android:src="@drawable/ic_location_on_grey600_18dp"
             android:layout_below="@+id/linearLayout2"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -154,8 +160,11 @@
         android:id="@+id/switchNotify"
         android:layout_below="@+id/linearLayout3"
         android:layout_alignEnd="@+id/linearLayout3"
+        android:layout_alignRight="@+id/linearLayout3"
         android:checked="false"
-        android:layout_alignStart="@+id/switchRepeated" />
+        android:layout_alignStart="@+id/switchRepeated"
+        android:layout_alignLeft="@+id/switchRepeated"
+        />
 
     <Button
         android:layout_width="match_parent"

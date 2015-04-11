@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
@@ -149,7 +150,10 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         });
 
 
-
+        /*
+        * other floating action buttons other than addEvent button
+        * they will launch the same activity with spinnerEventType disabled
+        * */
         Intent currentIntent= getIntent();
         final int eventTypeFromIntent;
         if((eventTypeFromIntent = currentIntent.getIntExtra("eventType", 0)) != 0){
@@ -219,6 +223,9 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
 
     /*
     handle save button click event
+    heavy function
+    functionalities must be seperated into small functions
+    weekly / monthly and yearly notifications aren't set as for now!
      */
     public void saveButtonHandler(View view){
 
@@ -287,7 +294,7 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         Log.d("database", this.selectedEventType + ", table updated " + noOfRowsAffected + " rows");
         /*update eventId of the resource*/
 
-
+        // add this to separate function
         /*add to recurrence type table*/
         long recurrenceTypeRowId= 0;
         // todo
@@ -326,12 +333,18 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
 
         /*add notification if set*/
         if(this.eventNotify){
-            long a[]= {10, 33, 12, 212,21 ,12};
+            long a[]= {0, 250, 200, 250, 150, 150, 75, 150, 75, 150};
+            //Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Uri uri = Uri.parse("android.resource://com.awesome.wathmal.awesomeapp/"+R.raw.galaxys5notification);
+
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_event_white_24dp)
+                    //        .setLargeIcon(  )
+                            .setSmallIcon(R.drawable.ic_event_white_36dp)
                             .setContentTitle(this.eventTitle)
                             .setContentText(this.eventDescription)
+                            .setWhen(this.eventDate.getTime())
+                            .setSound(uri)
                             .setVibrate(a);
             scheduleNotification(mBuilder.build(), this.eventDate.getTime(), (int)eventRowId);
 

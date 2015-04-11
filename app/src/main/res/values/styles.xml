@@ -1,8 +1,22 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Material">
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/my_action_bar</item>
+        <!--<item name="android:windowBackground">@color/windowbackground</item>-->
+        <item name="android:textColorHint">@color/black_semi_transparent</item>
+        <item name="android:actionModeBackground">@color/primary</item>
+    </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="my_action_bar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

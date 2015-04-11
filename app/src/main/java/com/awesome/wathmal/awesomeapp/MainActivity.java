@@ -6,12 +6,15 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +24,7 @@ import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private RecyclerView mRecyclerView;
@@ -41,6 +44,15 @@ public class MainActivity extends Activity
     private DatabaseHandler dh;
     private String adapterEventType;
     private Context context;
+    private ActionMode.Callback mActionModeCallback;
+    android.view.ActionMode mActionMode = null;
+
+    /*variables to handle long press items*/
+    private int longPressedPosition;
+    private int clickedItemPosition;
+    private String longPressedType;
+
+
     public MainActivity() {
     }
 
@@ -69,6 +81,9 @@ public class MainActivity extends Activity
         this.adapterEventType= DatabaseHandler.TABLE_EVENT;
 
         mRecyclerView= (RecyclerView)findViewById(R.id.my_recycler_view);
+
+
+
         // Attach recycler view to the floating action button
         FloatingActionButton fab= (FloatingActionButton) findViewById(R.id.action_addEvent);
         FloatingActionButton fabMedicineButton= (FloatingActionButton)findViewById(R.id.action_medicine);
@@ -77,8 +92,7 @@ public class MainActivity extends Activity
         FloatingActionButton fabAudioBookButton= (FloatingActionButton)findViewById(R.id.action_audio_book);
         FloatingActionButton fabBookButton= (FloatingActionButton)findViewById(R.id.action_book);
 
-//        com.melnykov.fab.FloatingActionButton fab1= (com.melnykov.fab.FloatingActionButton) findViewById(R.id.action_addEvent);
-//        fab1.attachToRecyclerView(mRecyclerView);
+        /*fab / FloatingActionButton listeners*/
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,16 +144,9 @@ public class MainActivity extends Activity
 
 
 
-//        String a[]= new String[allEvents.size()];
-//        int i=0;
-//
-//        for(Event e: allEvents){
-//            a[i++]= e.get_title();
-//            Log.d("sqlite", "reading event "+ e.get_title());
-//        }
-
-        //String a[]= {"hello wathmal this is awesome", "i am awesome","කාලේ මටයි පින පෑදිච්චී", "සිංහල වැඩනේ"};
-//        int b[]= {};
+        /*
+        * set the adapter to RecyclerView
+        * */
         ContentAdapter contentAdapter= new ContentAdapter(context, allEvents, this.adapterEventType);
         mRecyclerView.setAdapter(contentAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -190,16 +197,107 @@ public class MainActivity extends Activity
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
+
+        /*
+        * contextual action bar setup and
+        * click listeners
+        * */
+        mActionModeCallback= new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                MenuInflater inflater = actionMode.getMenuInflater();
+                inflater.inflate(R.menu.context_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+
+                // edit button
+                if(menuItem.getItemId() == R.id.item_edit){
+
+                    if(adapterEventType.equals(DatabaseHandler.TABLE_BOOK)){
+                        android.support.v4.app.DialogFragment dialogAddBook =  new DialogAddBook(context, false, true,
+
+                                (Book)dh.getAllBooks().get(clickedItemPosition)
+                        );
+                        dialogAddBook.show(getSupportFragmentManager(), "book");
+                    }
+
+                    else if(adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)){
+                        android.support.v4.app.DialogFragment dialogAddMedicine =  new DialogAddMedicine(context, false, true,
+
+                                (Medicine)dh.getAllMedicines().get(clickedItemPosition)
+                        );
+                        dialogAddMedicine.show(getSupportFragmentManager(), "medicine");
+                    }
+
+                    else if(adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)){
+                        android.support.v4.app.DialogFragment dialogAddMovie =  new DialogAddMovie(context, false, true,
+
+                                (Movie)dh.getAllMovies().get(clickedItemPosition)
+                        );
+                        dialogAddMovie.show(getSupportFragmentManager(), "movie");
+                    }
+
+                    else if(adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
+
+                        android.support.v4.app.DialogFragment dialogAddAudioBook =  new DialogAddAudioBook(context, false, true,
+
+                                (AudioBook)dh.getAllAudioBooks().get(clickedItemPosition)
+                        );
+                        dialogAddAudioBook.show(getSupportFragmentManager(), "audio book");
+                    }
+
+                    else{
+                        Toast.makeText(context, "editing not implemented yet!", Toast.LENGTH_SHORT).show();
+                    }
+                    actionMode.finish();
+                }
+
+                // delete button
+                else if(menuItem.getItemId() == R.id.item_delete){
+                    dh.deleteItemFromATable(longPressedPosition, longPressedType);
+
+                    Toast.makeText(context, longPressedType +" item deleted", Toast.LENGTH_SHORT).show();
+                    refreshRecyclerView();
+                    actionMode.finish();
+                }
+
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                mActionMode = null;
+            }
+        };
+
+
     }
 
+    /*
+    * refresh the main recycler view based on navigational drawer selections
+    * */
     public void refreshAdapter(int adapterPosition){
-        //this.adapterEventType= adapterEventType;
+        String [] drawerMenuNames= getResources().getStringArray(R.array.drawer_list);
+        /*
+        * use switch() case;
+        * */
         if(adapterPosition == 1){
             this.adapterEventType= DatabaseHandler.TABLE_EVENT;
 
             List<Event> allEvents= dh.getAllEvents();
             ContentAdapter contentAdapter= new ContentAdapter(this, allEvents, adapterEventType);
             mRecyclerView.setAdapter(contentAdapter);
+
+
         }
 
         else if(adapterPosition == 2){
@@ -234,10 +332,18 @@ public class MainActivity extends Activity
             mRecyclerView.setAdapter(contentAdapter);
         }
 
+        // set the title of action bar
+        getActionBar().setTitle(drawerMenuNames[adapterPosition]);
+        mNavigationDrawerFragment.closeDrawer();
+
 
     }
 
 
+    /*
+    * initial overrides
+    * not functioning, but removing may break the flow
+    * */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -277,12 +383,16 @@ public class MainActivity extends Activity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
+            //restoreActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);
     }
 
+    /*
+    * main activity menu actions
+    * add appropriate actions
+    * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -337,5 +447,99 @@ public class MainActivity extends Activity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+    /*
+    * long press click action function
+    * adapter calls this function when a long click on recycler view item
+    * actual functionality of CAB is on mActionModeCallback inside onCreate()
+    * */
+    public void setContextMenu(int position, String type){
+        if (mActionMode != null) {
+
+        }
+        if(type.equals(this.adapterEventType)){
+            this.longPressedPosition= position;
+            this.longPressedType= type;
+        }
+        else{
+
+        }
+        // Start the CAB using the ActionMode.Callback defined above
+        mActionMode = this.startActionMode(mActionModeCallback);
+
+    }
+
+    /*
+    * this to refresh adapter from refreshAdapter()
+    * we should use that method without this method
+    * bad engineering!
+    * */
+    private void refreshRecyclerView(){
+        if(this.longPressedType.equals(DatabaseHandler.TABLE_EVENT)){
+            refreshAdapter(1);
+        }
+        else if(this.longPressedType.equals(DatabaseHandler.TABLE_BOOK)){
+            refreshAdapter(2);
+        }
+        else if(this.longPressedType.equals(DatabaseHandler.TABLE_MEDICINE)){
+            refreshAdapter(3);
+        }
+        else if(this.longPressedType.equals(DatabaseHandler.TABLE_MOVIE)){
+            refreshAdapter(4);
+        }
+        else if(this.longPressedType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
+            refreshAdapter(5);
+        }
+
+    }
+
+    /*
+    * handles on click events on recycler view
+    * adapter calls this method when an item is clicked
+    * */
+    public void showViewingDialog(String eventType, int position){
+        if(eventType.equals(this.adapterEventType)){
+            // negation can't be happen
+            this.clickedItemPosition = position;
+
+            if(eventType.equals(DatabaseHandler.TABLE_BOOK)){
+                android.support.v4.app.DialogFragment dialogAddBook =  new DialogAddBook(context, true, false,
+
+                        (Book)dh.getAllBooks().get(position)
+                        );
+                dialogAddBook.show(getSupportFragmentManager(), "book");
+            }
+
+            else if(eventType.equals(DatabaseHandler.TABLE_MEDICINE)){
+                android.support.v4.app.DialogFragment dialogAddMedicine =  new DialogAddMedicine(context, true, false,
+
+                        (Medicine)dh.getAllMedicines().get(position)
+                        );
+                dialogAddMedicine.show(getSupportFragmentManager(), "medicine");
+            }
+
+            else if(eventType.equals(DatabaseHandler.TABLE_MOVIE)){
+                android.support.v4.app.DialogFragment dialogAddMovie =  new DialogAddMovie(context, true, false,
+
+                        (Movie)dh.getAllMovies().get(position)
+                        );
+                dialogAddMovie.show(getSupportFragmentManager(), "movie");
+            }
+
+            else if(eventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
+
+                android.support.v4.app.DialogFragment dialogAddAudioBook =  new DialogAddAudioBook(context, true,false,
+
+                        (AudioBook)dh.getAllAudioBooks().get(position)
+                        );
+                dialogAddAudioBook.show(getSupportFragmentManager(), "audio book");
+            }
+            else{
+                Toast.makeText(context, "viewing not implemented yet!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
 
 }

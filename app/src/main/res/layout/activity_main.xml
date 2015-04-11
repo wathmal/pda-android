@@ -72,7 +72,8 @@
                 android:id="@+id/action_audio_book"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/primary"
+                fab:fab_colorNormal="@color/mt_green"
+                fab:fab_colorPressed="@color/mt_green_dark"
                 fab:fab_size="mini"
                 fab:fab_title="audio book"
                 fab:fab_icon="@drawable/ic_queue_music_white_24dp"
@@ -83,7 +84,8 @@
                 android:id="@+id/action_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/primary"
+                fab:fab_colorNormal="@color/deep_purple"
+                fab:fab_colorPressed="@color/deep_purple_dark"
                 fab:fab_size="mini"
                 fab:fab_title="movie"
                 fab:fab_icon="@drawable/ic_movie_white_24dp"
@@ -93,7 +95,8 @@
                 android:id="@+id/action_medicine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@android:color/holo_orange_dark"
+                fab:fab_colorNormal="@color/amber"
+                fab:fab_colorPressed="@color/amber_dark"
                 fab:fab_size="mini"
                 fab:fab_title="medicine"
                 fab:fab_icon="@drawable/ic_pill_white_24dp"
@@ -113,10 +116,10 @@
                 android:id="@+id/action_addEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/primarydark"
-
+                fab:fab_colorNormal="@color/cyan"
+                fab:fab_colorPressed="@color/cyan_dark"
                 fab:fab_title="event"
-                fab:fab_icon="@drawable/ic_mode_edit_white_24dp"
+                fab:fab_icon="@drawable/ic_event_white_24dp"
                 />
 
         </net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu>

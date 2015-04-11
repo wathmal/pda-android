@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +143,8 @@ public class NavigationDrawerFragment extends Fragment {
         String []titles= getResources().getStringArray(R.array.drawer_list);
         DatabaseHandler dh= new DatabaseHandler(getActivity());
         String []notify= {"",
-                String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_EVENT, DatabaseHandler.EVENT_KEY_ID)),
+                // we always create a dummy event, media and a location
+                String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_EVENT, DatabaseHandler.EVENT_KEY_ID) -1),
                 String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_BOOK, DatabaseHandler.BOOK_KEY_ID)),
                 String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_MEDICINE, DatabaseHandler.MEDICINE_KEY_ID)),
                 String.valueOf(dh.getSizeOfATable(DatabaseHandler.TABLE_MOVIE, DatabaseHandler.MOVIE_KEY_ID)),
@@ -243,6 +243,11 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    /*closes the drawer*/
+    public void closeDrawer(){
+        mDrawerLayout.closeDrawer(mFragmentContainerView);
+    }
+
     private void selectItem(int position) {
         /*
         mCurrentSelectedPosition = position;
@@ -304,10 +309,12 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
+        /*
         if (item.getItemId() == R.id.action_example) {
             Toast.makeText(getActivity(), "example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }

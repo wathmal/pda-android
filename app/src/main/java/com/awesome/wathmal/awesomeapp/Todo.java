@@ -34,4 +34,8 @@ public class Todo {
     public void setEventId(int eventId) {
         this.eventId = eventId;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

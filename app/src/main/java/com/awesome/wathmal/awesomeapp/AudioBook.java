@@ -70,4 +70,8 @@ public class AudioBook {
     public void setMediaId(int mediaId) {
         this.mediaId = mediaId;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

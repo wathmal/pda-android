@@ -68,7 +68,7 @@ public class DialogAddLocation extends DialogFragment
                         ((AddEventActivity)getActivity()).refreshLocationSpinner();
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener(){
+                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         DialogAddLocation.this.getDialog().cancel();
@@ -117,27 +117,34 @@ public class DialogAddLocation extends DialogFragment
             getLocationFromGPS(lastLocation);
         }
         catch (NullPointerException e){
-            Log.e("location", e.getMessage());
+        //    Log.e("location", e.getMessage());
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+
+        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
         /*
         * set location status animation
         * */
-        textViewLocationStatus.setText("getting location from "+ LocationManager.NETWORK_PROVIDER);
-        textViewLocationStatus.setAnimation(AnimationUtils.loadAnimation(this.context, android.R.anim.fade_in));
-
+            textViewLocationStatus.setText("getting location from " + LocationManager.NETWORK_PROVIDER);
+            textViewLocationStatus.setAnimation(AnimationUtils.loadAnimation(this.context, android.R.anim.fade_in));
+        }
 
 
         this.gpsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
-                    textViewLocationStatus.setText("getting location from "+ LocationManager.GPS_PROVIDER);
+                try {
+                    if (isChecked) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+                        textViewLocationStatus.setText("getting location from " + LocationManager.GPS_PROVIDER);
+                    } else {
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+                        textViewLocationStatus.setText("getting location from " + LocationManager.NETWORK_PROVIDER);
+                    }
                 }
-                else{
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
-                    textViewLocationStatus.setText("getting location from "+ LocationManager.NETWORK_PROVIDER);
+                catch (Exception e){
+                    Toast.makeText(getActivity(), "switch on gps or location", Toast.LENGTH_SHORT).show();
+
                 }
 
             }

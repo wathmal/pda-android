@@ -31,4 +31,7 @@ public class Daily {
         this.eventId = eventId;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

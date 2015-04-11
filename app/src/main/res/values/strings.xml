@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">awesomeapp</string>
+    <string name="app_name">pda app</string>
     <string name="title_section1">section 1</string>
     <string name="title_section2">section 2</string>
     <string name="title_section3">section 3</string>
@@ -9,6 +9,8 @@
     <string name="navigation_drawer_close">close navigation drawer</string>
     <string name="action_example">example action</string>
     <string name="action_settings">settings</string>
+    <string name="action_cancel">cancel</string>
+
     <string name="app_detail">navigation drawer layout is something i loved from ages ......</string>
 
     <string-array name="drawer_list">

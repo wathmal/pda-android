@@ -29,4 +29,18 @@
     <color name="orange">#FF9900</color>
     <color name="green">#009900</color>
     <color name="blue">#000099</color>
+    
+    <color name="amber">#ffc107</color>
+    <color name="amber_dark">#ff6f00</color>
+
+    <color name="mt_green">#4caf50</color>
+    <color name="mt_green_dark">#1b5e20</color>
+
+    <color name="deep_purple">#673ab7</color>
+    <color name="deep_purple_dark">#311b92</color>
+
+    <color name="cyan">#00bcd4</color>
+    <color name="cyan_dark">#006064</color>
+
+    <color name="pinky_red">#ff1744</color>
 </resources>
