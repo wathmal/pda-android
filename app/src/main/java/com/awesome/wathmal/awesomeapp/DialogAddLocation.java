@@ -57,23 +57,6 @@ public class DialogAddLocation extends DialogFragment
 
         final DatabaseHandler dh= new DatabaseHandler(this.context);
 
-        builder.setView(addLocationView)
-                .setPositiveButton("add location", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        // add to db
-
-                        dh.addLocation(new com.awesome.wathmal.awesomeapp.Location(lat, lon, editTextLocationAddress.getText().toString() ));
-                        Toast.makeText(getActivity(), "new location added", Toast.LENGTH_SHORT).show();
-                        ((AddEventActivity)getActivity()).refreshLocationSpinner();
-                    }
-                })
-                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        DialogAddLocation.this.getDialog().cancel();
-                    }
-                });
 
         /*
         * location listener
@@ -151,6 +134,33 @@ public class DialogAddLocation extends DialogFragment
         });
 
         //this.editTextLat.setText("hellow");
+
+
+        builder.setView(addLocationView)
+                .setPositiveButton("add location", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // add to db
+
+                        dh.addLocation(new com.awesome.wathmal.awesomeapp.Location(lat, lon, editTextLocationAddress.getText().toString() ));
+                        Toast.makeText(getActivity(), "new location added", Toast.LENGTH_SHORT).show();
+
+                        // close location manager
+                        // can't change, fix needed.
+                        if(locationManager != null){
+                            locationManager.removeUpdates(listener);
+                        //    locationManager = null;
+                        }
+
+                        ((AddEventActivity)getActivity()).refreshLocationSpinner();
+                    }
+                })
+                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        DialogAddLocation.this.getDialog().cancel();
+                    }
+                });
 
         return builder.create();
 

@@ -790,7 +790,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
             while(cursor.moveToNext());
         }
-        db.close();
+        //db.close();
 
         Log.d("database", "book table length= "+ bookList.size());
         return bookList;
@@ -825,11 +825,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db= this.getWritableDatabase();
 
         Cursor cursor= db.query(TABLE_MEDIA, null ,MEDIA_KEY_ID+" = ?", new String[]{String.valueOf(id)}, null, null, null, "1");
-
+        //cursor.moveToFirst();
         if(cursor != null){
             cursor.moveToFirst();
         }
-        Media media= new Media(cursor.getInt(0), cursor.getString(1), cursor.getInt(3), cursor.getInt(4));
+        //Log.d("db", cursor.getString(0));
+        Media media= new Media(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3));
         db.close();
 
         return media;
