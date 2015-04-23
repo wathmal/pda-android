@@ -149,13 +149,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onConfigure(SQLiteDatabase db) {
 
-        db.setForeignKeyConstraintsEnabled(true);
+        //db.setForeignKeyConstraintsEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            db.setForeignKeyConstraintsEnabled(true);
+        } else {
+            db.execSQL("PRAGMA foreign_keys=ON");
+        }
+
         super.onConfigure(db);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.setForeignKeyConstraintsEnabled(true);
+        //db.setForeignKeyConstraintsEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            db.setForeignKeyConstraintsEnabled(true);
+        } else {
+            db.execSQL("PRAGMA foreign_keys=ON");
+        }
+
 
         String CREATE_LOCATION_TABLE= "CREATE TABLE "+ TABLE_LOCATION +"("+
                 LOCATION_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
@@ -269,7 +281,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues location= new ContentValues();
         location.put(LOCATION_KEY_LAT, 80);
         location.put(LOCATION_KEY_LONG, 6);
-        location.put(LOCATION_KEY_ADDRESS, "test");
+        location.put(LOCATION_KEY_ADDRESS, "sri lanka");
 
         db.insert(TABLE_LOCATION, null, location);
 
@@ -300,7 +312,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.setForeignKeyConstraintsEnabled(true);
+        //db.setForeignKeyConstraintsEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            db.setForeignKeyConstraintsEnabled(true);
+        } else {
+            db.execSQL("PRAGMA foreign_keys=ON");
+        }
 
         Log.d("awesomeapp", "old db version is "+ oldVersion);
         Log.d("awesomeapp", "new db version is "+ newVersion);
@@ -349,7 +366,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
 
-
+        cursor.close();
         return eventList;
     }
 
@@ -633,8 +650,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List getAllLocations(){
         List<Location> locationList= new ArrayList<Location>();
-        String selectQuery= "SELECT * FROM "+ TABLE_LOCATION +" WHERE "+LOCATION_KEY_ID+" != 1";
-
+        //String selectQuery= "SELECT * FROM "+ TABLE_LOCATION +" WHERE "+LOCATION_KEY_ID+" != 1";
+        String selectQuery= "SELECT * FROM "+ TABLE_LOCATION;
         SQLiteDatabase db= this.getWritableDatabase();
         Cursor cursor= db.rawQuery(selectQuery, null);
 

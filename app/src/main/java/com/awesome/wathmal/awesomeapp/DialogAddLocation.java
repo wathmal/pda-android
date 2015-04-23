@@ -150,6 +150,7 @@ public class DialogAddLocation extends DialogFragment
                         if(locationManager != null){
                             locationManager.removeUpdates(listener);
                         //    locationManager = null;
+
                         }
 
                         ((AddEventActivity)getActivity()).refreshLocationSpinner();
