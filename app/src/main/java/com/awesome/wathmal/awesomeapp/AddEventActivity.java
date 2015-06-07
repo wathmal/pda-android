@@ -297,6 +297,7 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         // add this to separate function
         /*add to recurrence type table*/
         long recurrenceTypeRowId= 0;
+
         // todo
         if(this.selectedRecurrenceType.equals(this.recurrenceTypes[0])){
             Todo todo= new Todo();

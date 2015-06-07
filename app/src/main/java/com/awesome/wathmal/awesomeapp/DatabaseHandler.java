@@ -183,19 +183,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_EVENT_TABLE=  "CREATE TABLE "+TABLE_EVENT +"(" +
                 EVENT_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
                 EVENT_KEY_TITLE+ " VARCHAR(30) NOT NULL," +
-                EVENT_KEY_DUE_DATE+" DATE," +
+                EVENT_KEY_DUE_DATE+" DATE CHECK('"+EVENT_KEY_DUE_DATE+"' > datetime('now'))," +     // check id duedate is after now
                 EVENT_KEY_DESC+" VARCHAR(200)," +
                 EVENT_KEY_REPEATED+ " BOOLEAN,"+
                 EVENT_KEY_LOCATION_ID+ " INTEGER REFERENCES "+ TABLE_LOCATION+"("+LOCATION_KEY_ID+") ON UPDATE CASCADE,"+
-                EVENT_KEY_RECURRENCE_TYPE+ " VARCHAR(20),"+
-                EVENT_KEY_EVENT_TYPE+ " VARCHAR(20),"+
+                EVENT_KEY_RECURRENCE_TYPE+ " VARCHAR(20) CHECK("+EVENT_KEY_RECURRENCE_TYPE+" IN ('todo', 'daily', 'weekly', 'monthly', 'yearly')),"+    // check recurrence types
+                EVENT_KEY_EVENT_TYPE+ " VARCHAR(20) CHECK("+EVENT_KEY_EVENT_TYPE+" IN ('event', 'book','medicine','movie','audio book')),"+             // check event types
                 EVENT_KEY_RESOURCE_ID+ " INTEGER,"+
                 EVENT_KEY_NOTIFY+ " BOOLEAN"
                 +")";
 
         String CREATE_MEDIA_TABLE= "CREATE TABLE "+ TABLE_MEDIA +"("+
                 MEDIA_KEY_ID+ " INTEGER PRIMARY KEY NOT NULL," +
-                MEDIA_KEY_TYPE+ " VARCHAR(30) NOT NULL," +
+                MEDIA_KEY_TYPE+ " VARCHAR(30) NOT NULL CHECK ("+MEDIA_KEY_TYPE+" IN ('movie','audio book'))," +
                 MEDIA_KEY_RESOURCE_ID+ " INTEGER,"+
                 MEDIA_KEY_EVENT_ID+ " INTEGER REFERENCES "+ TABLE_EVENT+"("+EVENT_KEY_ID+") ON UPDATE CASCADE ON DELETE CASCADE"
                 +")";
