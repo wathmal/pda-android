@@ -31,34 +31,6 @@ public class MainActivity extends FragmentActivity
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (adapterEventType.equals(DatabaseHandler.TABLE_EVENT)) {
-            List<Event> allEvents = dh.getAllEvents();
-            ContentAdapter contentAdapter = new ContentAdapter(context, allEvents, adapterEventType);
-            mRecyclerView.setAdapter(contentAdapter);
-        } else if (adapterEventType.equals(DatabaseHandler.TABLE_BOOK)) {
-            List<Book> allBooks = dh.getAllBooks();
-            ContentAdapter contentAdapter = new ContentAdapter(context, allBooks, adapterEventType);
-            mRecyclerView.setAdapter(contentAdapter);
-        } else if (adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)) {
-
-            List<Medicine> allMedicines = dh.getAllMedicines();
-            ContentAdapter contentAdapter = new ContentAdapter(context, allMedicines, adapterEventType);
-            mRecyclerView.setAdapter(contentAdapter);
-        } else if (adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)) {
-
-            List<Movie> allMovies = dh.getAllMovies();
-            ContentAdapter contentAdapter = new ContentAdapter(context, allMovies, adapterEventType);
-            mRecyclerView.setAdapter(contentAdapter);
-        } else if (adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
-
-            List<AudioBook> allAudioBooks = dh.getAllAudioBooks();
-            ContentAdapter contentAdapter = new ContentAdapter(context, allAudioBooks, adapterEventType);
-            mRecyclerView.setAdapter(contentAdapter);
-        }
-    }
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -532,5 +504,32 @@ public class MainActivity extends FragmentActivity
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapterEventType.equals(DatabaseHandler.TABLE_EVENT)) {
+            List<Event> allEvents = dh.getAllEvents();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allEvents, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_BOOK)) {
+            List<Book> allBooks = dh.getAllBooks();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allBooks, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)) {
 
+            List<Medicine> allMedicines = dh.getAllMedicines();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allMedicines, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)) {
+
+            List<Movie> allMovies = dh.getAllMovies();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allMovies, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
+
+            List<AudioBook> allAudioBooks = dh.getAllAudioBooks();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allAudioBooks, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        }
+    }
 }
