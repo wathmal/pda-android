@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // all static variables
     // database version
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 18;
 
     // db name
     private static final String DATABASE_NAME = "pdaproject";
@@ -200,7 +200,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 BOOK_KEY_ID + " INTEGER PRIMARY KEY NOT NULL," +
                 BOOK_KEY_TITLE + " VARCHAR(100)," +
                 BOOK_KEY_PAGES + " INTEGER," +
-                BOOK_KEY_CURRENT_PAGE + " INTEGER CHECK(" + BOOK_KEY_CURRENT_PAGE + " <= " + BOOK_KEY_PAGES + ")," +
+                BOOK_KEY_CURRENT_PAGE + " INTEGER," +
                 BOOK_KEY_EVENT_ID + " INTEGER REFERENCES " + TABLE_EVENT + "(" + EVENT_KEY_ID + ") ON UPDATE CASCADE ON DELETE CASCADE"
                 + ")";
 
@@ -210,7 +210,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 MOVIE_KEY_IMDB_ID + " VARCHAR(11) UNIQUE NOT NULL," +
                 MOVIE_KEY_TITLE + " VARCHAR(200)," +
                 MOVIE_KEY_DURATION + " INTEGER," +
-                MOVIE_KEY_CURRENT_TIME + " INTEGER CHECK(" + MOVIE_KEY_CURRENT_TIME + " <= " + MOVIE_KEY_DURATION + ")," +
+                MOVIE_KEY_CURRENT_TIME + " INTEGER," +
                 MOVIE_KEY_MEDIA_ID + " INTEGER REFERENCES " + TABLE_MEDIA + "(" + MEDIA_KEY_ID + ") ON UPDATE CASCADE ON DELETE CASCADE"
                 + ")";
 
@@ -218,7 +218,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 AUDIO_BOOK_ID + " INTEGER PRIMARY KEY NOT NULL," +
                 AUDIO_BOOK_TITLE + " VARCHAR(100)," +
                 AUDIO_BOOK_DURATION + " INTEGER," +
-                AUDIO_BOOK_CURR_TIME + " INTEGER CHECK(" + AUDIO_BOOK_CURR_TIME + " <= " + AUDIO_BOOK_DURATION + ")," +
+                AUDIO_BOOK_CURR_TIME + " INTEGER," +
                 AUDIO_BOOK_MEDIA_ID + " INTEGER REFERENCES " + TABLE_MEDIA + "(" + MEDIA_KEY_ID + ") ON UPDATE CASCADE ON DELETE CASCADE"
                 + ")";
 
