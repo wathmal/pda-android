@@ -34,24 +34,24 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class AddEventActivity extends FragmentActivity implements AdapterView.OnItemSelectedListener{
+public class AddEventActivity extends FragmentActivity implements AdapterView.OnItemSelectedListener {
 
-    String []eventTypes;
-    String []recurrenceTypes;
+    String[] eventTypes;
+    String[] recurrenceTypes;
 
     /*event attributes*/
-    private String eventTitle= null;
-    private String eventDescription= null;
-    private Date eventDate= null;
-    private String dateString= "";
-    private String timeString= "";
-    private boolean eventRepeated= false;
+    private String eventTitle = null;
+    private String eventDescription = null;
+    private Date eventDate = null;
+    private String dateString = "";
+    private String timeString = "";
+    private boolean eventRepeated = false;
     private long eventResourceId = 0;
-    private String selectedEventType= "event";
-    private String selectedRecurrenceType= "todo";
+    private String selectedEventType = "event";
+    private String selectedRecurrenceType = "todo";
     // not the actural row id
-    private int selectedLocationId= 0;
-    private boolean eventNotify= false;
+    private int selectedLocationId = 0;
+    private boolean eventNotify = false;
     /*event attributes*/
 
     private DatabaseHandler dh;
@@ -68,24 +68,22 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         setContentView(R.layout.activity_add_event);
 
 
-
-        this.dh= new DatabaseHandler(this);
-        eventTypes= getResources().getStringArray(R.array.event_types);
-        recurrenceTypes= getResources().getStringArray(R.array.recurrence_types);
-
+        this.dh = new DatabaseHandler(this);
+        eventTypes = getResources().getStringArray(R.array.event_types);
+        recurrenceTypes = getResources().getStringArray(R.array.recurrence_types);
 
 
         // get all locations.
-        this.locations= Collections.emptyList();
-        this.locations= this.dh.getAllLocations();
+        this.locations = Collections.emptyList();
+        this.locations = this.dh.getAllLocations();
 
 
         // set current date
-        Calendar c= Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         // this give month number starting from 1
-        int month= c.get(Calendar.MONTH)+1;
-        this.dateString= String.valueOf(c.get(Calendar.YEAR)+"-"+month+"-"+c.get(Calendar.DAY_OF_MONTH));
-        this.timeString= String.valueOf(c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE)+":00");
+        int month = c.get(Calendar.MONTH) + 1;
+        this.dateString = String.valueOf(c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DAY_OF_MONTH));
+        this.timeString = String.valueOf(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":00");
         updateDateAndTime();
 
 
@@ -95,7 +93,7 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         * */
 
         // event type spinner
-        final Spinner spinnerEventType= (Spinner) findViewById(R.id.spinnerEventType);
+        final Spinner spinnerEventType = (Spinner) findViewById(R.id.spinnerEventType);
 
         ArrayAdapter<CharSequence> eventTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.event_types, R.layout.my_spinner_item);
@@ -103,7 +101,7 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         spinnerEventType.setAdapter(eventTypeAdapter);
         spinnerEventType.setOnItemSelectedListener(this);
         // recurrence type spinner
-        Spinner spinnerRecurrenceType= (Spinner) findViewById(R.id.spinnerRecurrenceType);
+        Spinner spinnerRecurrenceType = (Spinner) findViewById(R.id.spinnerRecurrenceType);
         ArrayAdapter<CharSequence> recurrenceTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.recurrence_types, R.layout.my_spinner_item);
         recurrenceTypeAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
@@ -112,41 +110,41 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
 
 
         // location spinner
-        this.spinnerLocation= (Spinner) findViewById(R.id.spinnerLocation);
+        this.spinnerLocation = (Spinner) findViewById(R.id.spinnerLocation);
 
         /*if(locations.size() ==0){
             this.dh.addLocation(new Location((float)6.0440405, (float)80.722632, "my home"));
             locations= this.dh.getAllLocations();
         }*/
 
-        this.locationArray = new String[locations.size()+1];
-        for(int i=0; i<locations.size(); i++){
-            this.locationArray[i]= locations.get(i).getAddress();
+        this.locationArray = new String[locations.size() + 1];
+        for (int i = 0; i < locations.size(); i++) {
+            this.locationArray[i] = locations.get(i).getAddress();
         }
-        this.locationArray[locations.size()]= "add new";
-        ArrayAdapter<String> locationAdapter= new ArrayAdapter<String>(this, R.layout.my_spinner_item, this.locationArray);
+        this.locationArray[locations.size()] = "add new";
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(this, R.layout.my_spinner_item, this.locationArray);
         locationAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerLocation.setAdapter(locationAdapter);
         spinnerLocation.setOnItemSelectedListener(this);
 
 
         // date button action
-        Button dateButton= (Button) findViewById(R.id.buttonAddDate);
+        Button dateButton = (Button) findViewById(R.id.buttonAddDate);
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment fragment= new DatePickerFragment();
-                fragment.show(getFragmentManager(),"choose date");
+                DialogFragment fragment = new DatePickerFragment();
+                fragment.show(getFragmentManager(), "choose date");
             }
         });
 
         // time button action
-        Button timeButton= (Button) findViewById(R.id.buttonAddTime);
+        Button timeButton = (Button) findViewById(R.id.buttonAddTime);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment fragment= new TimePickerFragment();
-                fragment.show(getFragmentManager(),"choose time");
+                DialogFragment fragment = new TimePickerFragment();
+                fragment.show(getFragmentManager(), "choose time");
             }
         });
 
@@ -155,10 +153,10 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         * other floating action buttons other than addEvent button
         * they will launch the same activity with spinnerEventType disabled
         * */
-        Intent currentIntent= getIntent();
+        Intent currentIntent = getIntent();
         final int eventTypeFromIntent;
-        if((eventTypeFromIntent = currentIntent.getIntExtra("eventType", 0)) != 0){
-            this.selectedEventType= this.eventTypes[eventTypeFromIntent];
+        if ((eventTypeFromIntent = currentIntent.getIntExtra("eventType", 0)) != 0) {
+            this.selectedEventType = this.eventTypes[eventTypeFromIntent];
 
 
             spinnerEventType.setSelection(eventTypeFromIntent);
@@ -167,35 +165,34 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         }
 
 
-
     }
 
     // update date and time which is set to global dateString and timeString
-    public void updateDateAndTime(){
-        DateFormat df= new SimpleDateFormat("yy-MM-dd HH:mm", Locale.ENGLISH);
+    public void updateDateAndTime() {
+        DateFormat df = new SimpleDateFormat("yy-MM-dd HH:mm", Locale.ENGLISH);
         try {
-            this.eventDate= df.parse(this.dateString+" "+this.timeString);
+            this.eventDate = df.parse(this.dateString + " " + this.timeString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        TextView textViewDateAndTime= (TextView) findViewById(R.id.textViewDateAndTime);
+        TextView textViewDateAndTime = (TextView) findViewById(R.id.textViewDateAndTime);
         textViewDateAndTime.setText(df.format(this.eventDate));
     }
 
     /*
     get Date from the DatePickerFragment and handle inside the AddEventActivity
      */
-    public void setDate(int year, int monthOfYear, int dayOfMonth){
+    public void setDate(int year, int monthOfYear, int dayOfMonth) {
 
-        monthOfYear= monthOfYear+1;
-        this.dateString = String.valueOf(year +"-"+ monthOfYear+"-"+ dayOfMonth);
+        monthOfYear = monthOfYear + 1;
+        this.dateString = String.valueOf(year + "-" + monthOfYear + "-" + dayOfMonth);
         updateDateAndTime();
 
 
     }
 
-    public void setTime(int hourOfDay, int minutes){
-        this.timeString= String.valueOf(hourOfDay+":"+minutes+":00");
+    public void setTime(int hourOfDay, int minutes) {
+        this.timeString = String.valueOf(hourOfDay + ":" + minutes + ":00");
         updateDateAndTime();
     }
 
@@ -228,37 +225,37 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
     functionalities must be seperated into small functions
     weekly / monthly and yearly notifications aren't set as for now!
      */
-    public void saveButtonHandler(View view){
+    public void saveButtonHandler(View view) {
 
-        EditText textTitle= (EditText) findViewById(R.id.editTextEventTitle);
-        EditText textDescription= (EditText) findViewById(R.id.editTextEventDescription);
+        EditText textTitle = (EditText) findViewById(R.id.editTextEventTitle);
+        EditText textDescription = (EditText) findViewById(R.id.editTextEventDescription);
 
-        Switch switchRepeated= (Switch) findViewById(R.id.switchRepeated);
-        Switch switchNotify= (Switch)findViewById(R.id.switchNotify);
+        Switch switchRepeated = (Switch) findViewById(R.id.switchRepeated);
+        Switch switchNotify = (Switch) findViewById(R.id.switchNotify);
 
-        this.eventTitle= textTitle.getText().toString();
-        this.eventDescription= textDescription.getText().toString();
-        this.eventRepeated= switchRepeated.isChecked();
-        this.eventNotify= switchNotify.isChecked();
+        this.eventTitle = textTitle.getText().toString();
+        this.eventDescription = textDescription.getText().toString();
+        this.eventRepeated = switchRepeated.isChecked();
+        this.eventNotify = switchNotify.isChecked();
 
-        Event newEvent= new Event(this.eventTitle, this.eventDescription, this.eventDate, this.eventRepeated,
+        Event newEvent = new Event(this.eventTitle, this.eventDescription, this.eventDate, this.eventRepeated,
                 this.locations.get(this.selectedLocationId).getId(),
                 this.selectedRecurrenceType,
                 this.selectedEventType,
-                (int)this.eventResourceId,
+                (int) this.eventResourceId,
                 this.eventNotify
-                );
-        DatabaseHandler dh= new DatabaseHandler(this);
+        );
+        DatabaseHandler dh = new DatabaseHandler(this);
 
-        long eventRowId =0;
+        long eventRowId = 0;
         eventRowId = dh.addEvent(newEvent);
         /*
         * exception may throw due to check constraints in sqlite
         * */
-        if(eventRowId != -1){
+        if (eventRowId != -1) {
 
 
-            Log.d("check","event id = "+ eventRowId);
+            Log.d("check", "event id = " + eventRowId);
             int noOfRowsAffected = 0;
             // book
             if (this.selectedEventType.equals(this.eventTypes[1])) {
@@ -383,31 +380,31 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         * */
 
         // eventType spinner
-        if(parent.getId() == R.id.spinnerEventType){
+        if (parent.getId() == R.id.spinnerEventType) {
             this.selectedEventType = this.eventTypes[position];
 
-            switch (position){
+            switch (position) {
                 case 0: {
                     // just event
                     break;
                 }
                 case 1: {
-                    android.support.v4.app.DialogFragment dialogAddBook =  new DialogAddBook(getBaseContext());
+                    android.support.v4.app.DialogFragment dialogAddBook = new DialogAddBook(getBaseContext());
                     dialogAddBook.show(getSupportFragmentManager(), "book");
                     break;
                 }
                 case 2: {
-                    android.support.v4.app.DialogFragment dialogAddMedicine =  new DialogAddMedicine(getBaseContext());
+                    android.support.v4.app.DialogFragment dialogAddMedicine = new DialogAddMedicine(getBaseContext());
                     dialogAddMedicine.show(getSupportFragmentManager(), "medicine");
                     break;
                 }
                 case 3: {
-                    android.support.v4.app.DialogFragment dialogAddMovie =  new DialogAddMovie(getBaseContext());
+                    android.support.v4.app.DialogFragment dialogAddMovie = new DialogAddMovie(getBaseContext());
                     dialogAddMovie.show(getSupportFragmentManager(), "movie");
                     break;
                 }
                 case 4: {
-                    android.support.v4.app.DialogFragment dialogAddAudioBook =  new DialogAddAudioBook(getBaseContext());
+                    android.support.v4.app.DialogFragment dialogAddAudioBook = new DialogAddAudioBook(getBaseContext());
                     dialogAddAudioBook.show(getSupportFragmentManager(), "audio book");
                     break;
                 }
@@ -417,26 +414,25 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         }
 
         // recurrenceType spinner
-        else if(parent.getId() == R.id.spinnerRecurrenceType){
+        else if (parent.getId() == R.id.spinnerRecurrenceType) {
             this.selectedRecurrenceType = this.recurrenceTypes[position];
         }
 
         // location spinner
-        else if(parent.getId() == R.id.spinnerLocation){
-            if(position <= this.locations.size()-1){
+        else if (parent.getId() == R.id.spinnerLocation) {
+            if (position <= this.locations.size() - 1) {
 
-                this.selectedLocationId= position;
+                this.selectedLocationId = position;
 
             }
             // add new loacation selected
 //            if(parent.getSelectedItem().toString().equals("add new")){
-            else{
-                android.support.v4.app.DialogFragment dialogAddLocation= new DialogAddLocation(getBaseContext());
+            else {
+                android.support.v4.app.DialogFragment dialogAddLocation = new DialogAddLocation(getBaseContext());
                 dialogAddLocation.show(getSupportFragmentManager(), "add location");
             }
 
         }
-
 
 
     }
@@ -446,8 +442,8 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
 
     }
 
-    void refreshLocationSpinner(){
-        this.locations= this.dh.getAllLocations();
+    void refreshLocationSpinner() {
+        this.locations = this.dh.getAllLocations();
         // location spinner
 
 
@@ -456,12 +452,12 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
             locations= this.dh.getAllLocations();
         }*/
 
-        this.locationArray = new String[locations.size()+1];
-        for(int i=0; i<locations.size(); i++){
-            this.locationArray[i]= locations.get(i).getAddress();
+        this.locationArray = new String[locations.size() + 1];
+        for (int i = 0; i < locations.size(); i++) {
+            this.locationArray[i] = locations.get(i).getAddress();
         }
-        this.locationArray[locations.size()]= "add new";
-        ArrayAdapter<String> locationAdapter= new ArrayAdapter<String>(this, R.layout.my_spinner_item, this.locationArray);
+        this.locationArray[locations.size()] = "add new";
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(this, R.layout.my_spinner_item, this.locationArray);
         locationAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         this.spinnerLocation.setAdapter(locationAdapter);
         this.spinnerLocation.setOnItemSelectedListener(this);
@@ -480,16 +476,16 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //long futureInMillis = SystemClock.elapsedRealtime() + delay;
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        if(this.selectedRecurrenceType.equals(this.recurrenceTypes[0])) {
+        if (this.selectedRecurrenceType.equals(this.recurrenceTypes[0])) {
             alarmManager.set(AlarmManager.RTC, time, pendingIntent);
-            Log.i("notification", "new notification set to "+ time);
+            Log.i("notification", "new notification set to " + time);
         }
         // daily event
-        else if(this.selectedRecurrenceType.equals(this.recurrenceTypes[1])){
+        else if (this.selectedRecurrenceType.equals(this.recurrenceTypes[1])) {
             alarmManager.setRepeating(AlarmManager.RTC, time, AlarmManager.INTERVAL_DAY, pendingIntent);
-            Log.i("notification", "new "+this.selectedRecurrenceType+" repeating notification set to "+ time);
+            Log.i("notification", "new " + this.selectedRecurrenceType + " repeating notification set to " + time);
         }
     }
 }
