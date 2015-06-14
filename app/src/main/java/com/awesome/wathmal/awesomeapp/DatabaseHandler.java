@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // all static variables
     // database version
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 24;
 
     // db name
     private static final String DATABASE_NAME = "pdaproject";
@@ -299,7 +299,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_EVENT, null, values);
 
         ContentValues media = new ContentValues();
-        media.put(MEDIA_KEY_TYPE, "");
+        media.put(MEDIA_KEY_TYPE, "movie");
         media.put(MEDIA_KEY_RESOURCE_ID, 0);
         media.put(MEDIA_KEY_EVENT_ID, 1);
 
