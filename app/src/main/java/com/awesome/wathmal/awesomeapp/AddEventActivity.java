@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -249,111 +250,121 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
                 );
         DatabaseHandler dh= new DatabaseHandler(this);
 
-        long eventRowId= dh.addEvent(newEvent);
+        long eventRowId =0;
+
+        /*
+        * exception may throw due to check constraints in sqlite
+        * */
+        try {
+
+            eventRowId = dh.addEvent(newEvent);
+            int noOfRowsAffected = 0;
+            // book
+            if (this.selectedEventType.equals(this.eventTypes[1])) {
+                noOfRowsAffected = dh.updateEventIdOfATable(DatabaseHandler.TABLE_BOOK,
+                        DatabaseHandler.BOOK_KEY_ID,
+                        DatabaseHandler.BOOK_KEY_EVENT_ID,
+                        (int) this.eventResourceId, (int) eventRowId);
 
 
-        int noOfRowsAffected= 0;
-        // book
-        if(this.selectedEventType.equals(this.eventTypes[1])) {
-            noOfRowsAffected= dh.updateEventIdOfATable(DatabaseHandler.TABLE_BOOK,
-                    DatabaseHandler.BOOK_KEY_ID,
-                    DatabaseHandler.BOOK_KEY_EVENT_ID,
-                    (int)this.eventResourceId, (int)eventRowId);
+            }
+            // medicine
+            else if (this.selectedEventType.equals(this.eventTypes[2])) {
+                // update this to common updateEventIdOfATable() d.
+                noOfRowsAffected = dh.updateMedicineEventId((int) this.eventResourceId, (int) eventRowId);
 
+            }
+            // movie
+            else if (this.selectedEventType.equals(this.eventTypes[3])) {
+                Media media = new Media(this.selectedEventType, (int) this.eventResourceId, (int) eventRowId);
+                long mediaId = dh.addMedia(media);
+                Log.d("database", "added new media, id= " + mediaId);
 
-        }
-        // medicine
-        else if(this.selectedEventType.equals(this.eventTypes[2])){
-            // update this to common updateEventIdOfATable() d.
-            noOfRowsAffected= dh.updateMedicineEventId((int)this.eventResourceId, (int)eventRowId);
+                noOfRowsAffected = dh.updateEventIdOfATable(DatabaseHandler.TABLE_MOVIE,
+                        DatabaseHandler.MOVIE_KEY_ID,
+                        DatabaseHandler.MOVIE_KEY_MEDIA_ID,
+                        (int) this.eventResourceId, (int) mediaId);
 
-        }
-        // movie
-        else if(this.selectedEventType.equals(this.eventTypes[3])){
-            Media media= new Media(this.selectedEventType, (int)this.eventResourceId, (int)eventRowId);
-            long mediaId= dh.addMedia(media);
-            Log.d("database", "added new media, id= "+mediaId);
+            }
+            // audio book
+            else if (this.selectedEventType.equals(this.eventTypes[4])) {
+                Media media = new Media(this.selectedEventType, (int) this.eventResourceId, (int) eventRowId);
+                long mediaId = dh.addMedia(media);
+                Log.d("database", "added new media, id= " + mediaId);
 
-            noOfRowsAffected= dh.updateEventIdOfATable(DatabaseHandler.TABLE_MOVIE,
-                    DatabaseHandler.MOVIE_KEY_ID,
-                    DatabaseHandler.MOVIE_KEY_MEDIA_ID,
-                    (int)this.eventResourceId, (int)mediaId);
-
-        }
-        // audio book
-        else if(this.selectedEventType.equals(this.eventTypes[4])){
-            Media media= new Media(this.selectedEventType, (int)this.eventResourceId, (int)eventRowId);
-            long mediaId= dh.addMedia(media);
-            Log.d("database", "added new media, id= "+mediaId);
-
-            noOfRowsAffected= dh.updateEventIdOfATable(DatabaseHandler.TABLE_AUDIO_BOOK,
-                    DatabaseHandler.AUDIO_BOOK_ID,
-                    DatabaseHandler.AUDIO_BOOK_MEDIA_ID,
-                    (int)this.eventResourceId, (int)mediaId);
-        }
-        Log.d("database", this.selectedEventType + ", table updated " + noOfRowsAffected + " rows");
+                noOfRowsAffected = dh.updateEventIdOfATable(DatabaseHandler.TABLE_AUDIO_BOOK,
+                        DatabaseHandler.AUDIO_BOOK_ID,
+                        DatabaseHandler.AUDIO_BOOK_MEDIA_ID,
+                        (int) this.eventResourceId, (int) mediaId);
+            }
+            Log.d("database", this.selectedEventType + ", table updated " + noOfRowsAffected + " rows");
         /*update eventId of the resource*/
 
-        // add this to separate function
+            // add this to separate function
         /*add to recurrence type table*/
-        long recurrenceTypeRowId= 0;
+            long recurrenceTypeRowId = 0;
 
-        // todo
-        if(this.selectedRecurrenceType.equals(this.recurrenceTypes[0])){
-            Todo todo= new Todo();
-            todo.setEventId((int)eventRowId);
-            recurrenceTypeRowId = dh.addTodo(todo);
-        }
-        // daily
-        else if(this.selectedRecurrenceType.equals(this.recurrenceTypes[1])){
-            Daily daily= new Daily();
-            daily.setEventId((int)eventRowId);
-            recurrenceTypeRowId= dh.addDaily(daily);
-        }
-        // weekly
-        else if(this.selectedRecurrenceType.equals(this.recurrenceTypes[2])){
-            Weekly weekly= new Weekly();
-            weekly.setEventId((int)eventRowId);
-            recurrenceTypeRowId= dh.addWeekly(weekly);
-        }
-        // monthly
-        else if(this.selectedRecurrenceType.equals(this.recurrenceTypes[3])){
-            Monthly monthly= new Monthly();
-            monthly.setEventId((int)eventRowId);
-            recurrenceTypeRowId= dh.addMonthly(monthly);
-        }
-        // yearly
-        else if(this.selectedRecurrenceType.equals(this.recurrenceTypes[4])){
-            Yearly yearly= new Yearly();
-            yearly.setEventId((int)eventRowId);
-            recurrenceTypeRowId= dh.addYearly(yearly);
-        }
-        Log.d("database", "new event added to "+this.selectedRecurrenceType+" table, id= "+recurrenceTypeRowId);
+            // todo
+            if (this.selectedRecurrenceType.equals(this.recurrenceTypes[0])) {
+                Todo todo = new Todo();
+                todo.setEventId((int) eventRowId);
+                recurrenceTypeRowId = dh.addTodo(todo);
+            }
+            // daily
+            else if (this.selectedRecurrenceType.equals(this.recurrenceTypes[1])) {
+                Daily daily = new Daily();
+                daily.setEventId((int) eventRowId);
+                recurrenceTypeRowId = dh.addDaily(daily);
+            }
+            // weekly
+            else if (this.selectedRecurrenceType.equals(this.recurrenceTypes[2])) {
+                Weekly weekly = new Weekly();
+                weekly.setEventId((int) eventRowId);
+                recurrenceTypeRowId = dh.addWeekly(weekly);
+            }
+            // monthly
+            else if (this.selectedRecurrenceType.equals(this.recurrenceTypes[3])) {
+                Monthly monthly = new Monthly();
+                monthly.setEventId((int) eventRowId);
+                recurrenceTypeRowId = dh.addMonthly(monthly);
+            }
+            // yearly
+            else if (this.selectedRecurrenceType.equals(this.recurrenceTypes[4])) {
+                Yearly yearly = new Yearly();
+                yearly.setEventId((int) eventRowId);
+                recurrenceTypeRowId = dh.addYearly(yearly);
+            }
+            Log.d("database", "new event added to " + this.selectedRecurrenceType + " table, id= " + recurrenceTypeRowId);
         /*add to recurrence type table*/
 
 
         /*add notification if set*/
-        if(this.eventNotify){
-            long a[]= {0, 250, 200, 250, 150, 150, 75, 150, 75, 150};
-            //Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Uri uri = Uri.parse("android.resource://com.awesome.wathmal.awesomeapp/"+R.raw.galaxys5notification);
+            if (this.eventNotify) {
+                long a[] = {0, 250, 200, 250, 150, 150, 75, 150, 75, 150};
+                //Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Uri uri = Uri.parse("android.resource://com.awesome.wathmal.awesomeapp/" + R.raw.galaxys5notification);
 
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                    //        .setLargeIcon(  )
-                            .setSmallIcon(R.drawable.ic_event_white_36dp)
-                            .setContentTitle(this.eventTitle)
-                            .setContentText(this.eventDescription)
-                            .setWhen(this.eventDate.getTime())
-                            .setSound(uri)
-                            .setVibrate(a);
-            scheduleNotification(mBuilder.build(), this.eventDate.getTime(), (int)eventRowId);
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(this)
+                                //        .setLargeIcon(  )
+                                .setSmallIcon(R.drawable.ic_event_white_36dp)
+                                .setContentTitle(this.eventTitle)
+                                .setContentText(this.eventDescription)
+                                .setWhen(this.eventDate.getTime())
+                                .setSound(uri)
+                                .setVibrate(a);
+                scheduleNotification(mBuilder.build(), this.eventDate.getTime(), (int) eventRowId);
 
 
-        }
+            }
         /*add notification if set*/
-        Toast.makeText(this, "new event added, id= "+eventRowId, Toast.LENGTH_SHORT).show();
-        finish();
+            Toast.makeText(this, "new event added, id= " + eventRowId, Toast.LENGTH_SHORT).show();
+            finish();
+
+        } catch (Exception x){
+            Log.e("exception", x.getMessage());
+        }
+
 
     }
 
