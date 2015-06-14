@@ -184,7 +184,6 @@ public class MainActivity extends FragmentActivity
                     ContentAdapter contentAdapter = new ContentAdapter(context, allAudioBooks, adapterEventType);
                     mRecyclerView.setAdapter(contentAdapter);
                 }
-
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -309,6 +308,7 @@ public class MainActivity extends FragmentActivity
 
         // set the title of action bar
         getActionBar().setTitle(drawerMenuNames[adapterPosition]);
+        mNavigationDrawerFragment.refresh();
         mNavigationDrawerFragment.closeDrawer();
 
 
@@ -460,7 +460,6 @@ public class MainActivity extends FragmentActivity
         } else if (this.longPressedType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
             refreshAdapter(5);
         }
-
     }
 
     /*
@@ -531,5 +530,6 @@ public class MainActivity extends FragmentActivity
             ContentAdapter contentAdapter = new ContentAdapter(context, allAudioBooks, adapterEventType);
             mRecyclerView.setAdapter(contentAdapter);
         }
+        mNavigationDrawerFragment.refresh();
     }
 }
