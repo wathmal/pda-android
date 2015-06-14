@@ -74,37 +74,36 @@ public class MainActivity extends FragmentActivity
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
 
-        this.dh= new DatabaseHandler(this);
-        this.context= this;
+        this.dh = new DatabaseHandler(this);
+        this.context = this;
 
-        List<Event> allEvents= dh.getAllEvents();
-        this.adapterEventType= DatabaseHandler.TABLE_EVENT;
+        List<Event> allEvents = dh.getAllEvents();
+        this.adapterEventType = DatabaseHandler.TABLE_EVENT;
 
-        mRecyclerView= (RecyclerView)findViewById(R.id.my_recycler_view);
-
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
 
         // Attach recycler view to the floating action button
-        FloatingActionButton fab= (FloatingActionButton) findViewById(R.id.action_addEvent);
-        FloatingActionButton fabMedicineButton= (FloatingActionButton)findViewById(R.id.action_medicine);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.action_addEvent);
+        FloatingActionButton fabMedicineButton = (FloatingActionButton) findViewById(R.id.action_medicine);
 
-        FloatingActionButton fabMovieButton= (FloatingActionButton)findViewById(R.id.action_movie);
-        FloatingActionButton fabAudioBookButton= (FloatingActionButton)findViewById(R.id.action_audio_book);
-        FloatingActionButton fabBookButton= (FloatingActionButton)findViewById(R.id.action_book);
+        FloatingActionButton fabMovieButton = (FloatingActionButton) findViewById(R.id.action_movie);
+        FloatingActionButton fabAudioBookButton = (FloatingActionButton) findViewById(R.id.action_audio_book);
+        FloatingActionButton fabBookButton = (FloatingActionButton) findViewById(R.id.action_book);
 
         /*fab / FloatingActionButton listeners*/
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addEventIntent= new Intent(MainActivity.this, AddEventActivity.class);
+                Intent addEventIntent = new Intent(MainActivity.this, AddEventActivity.class);
                 MainActivity.this.startActivity(addEventIntent);
             }
         });
         fabMedicineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addMedicineIntent= new Intent(MainActivity.this, AddEventActivity.class);
+                Intent addMedicineIntent = new Intent(MainActivity.this, AddEventActivity.class);
                 addMedicineIntent.putExtra("eventType", 2);
 
                 MainActivity.this.startActivity(addMedicineIntent);
@@ -114,7 +113,7 @@ public class MainActivity extends FragmentActivity
         fabMovieButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(MainActivity.this, AddEventActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
                 intent.putExtra("eventType", 3);
 
                 MainActivity.this.startActivity(intent);
@@ -124,7 +123,7 @@ public class MainActivity extends FragmentActivity
         fabAudioBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(MainActivity.this, AddEventActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
                 intent.putExtra("eventType", 4);
 
                 MainActivity.this.startActivity(intent);
@@ -134,7 +133,7 @@ public class MainActivity extends FragmentActivity
         fabBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(MainActivity.this, AddEventActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
                 intent.putExtra("eventType", 1);
 
                 MainActivity.this.startActivity(intent);
@@ -147,7 +146,7 @@ public class MainActivity extends FragmentActivity
         /*
         * set the adapter to RecyclerView
         * */
-        ContentAdapter contentAdapter= new ContentAdapter(context, allEvents, this.adapterEventType);
+        ContentAdapter contentAdapter = new ContentAdapter(context, allEvents, this.adapterEventType);
         mRecyclerView.setAdapter(contentAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -161,39 +160,30 @@ public class MainActivity extends FragmentActivity
             public void onRefresh() {
 
                 /*if else block to refresh particular event type*/
-                if(adapterEventType.equals(DatabaseHandler.TABLE_EVENT)){
-                    List<Event> allEvents= dh.getAllEvents();
-                    ContentAdapter contentAdapter= new ContentAdapter(context, allEvents, adapterEventType);
+                if (adapterEventType.equals(DatabaseHandler.TABLE_EVENT)) {
+                    List<Event> allEvents = dh.getAllEvents();
+                    ContentAdapter contentAdapter = new ContentAdapter(context, allEvents, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                } else if (adapterEventType.equals(DatabaseHandler.TABLE_BOOK)) {
+                    List<Book> allBooks = dh.getAllBooks();
+                    ContentAdapter contentAdapter = new ContentAdapter(context, allBooks, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                } else if (adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)) {
+
+                    List<Medicine> allMedicines = dh.getAllMedicines();
+                    ContentAdapter contentAdapter = new ContentAdapter(context, allMedicines, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                } else if (adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)) {
+
+                    List<Movie> allMovies = dh.getAllMovies();
+                    ContentAdapter contentAdapter = new ContentAdapter(context, allMovies, adapterEventType);
+                    mRecyclerView.setAdapter(contentAdapter);
+                } else if (adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
+
+                    List<AudioBook> allAudioBooks = dh.getAllAudioBooks();
+                    ContentAdapter contentAdapter = new ContentAdapter(context, allAudioBooks, adapterEventType);
                     mRecyclerView.setAdapter(contentAdapter);
                 }
-
-                else if(adapterEventType.equals(DatabaseHandler.TABLE_BOOK)){
-                    List<Book> allBooks= dh.getAllBooks();
-                    ContentAdapter contentAdapter= new ContentAdapter(context, allBooks, adapterEventType);
-                    mRecyclerView.setAdapter(contentAdapter);
-                }
-
-                else if(adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)){
-
-                    List<Medicine> allMedicines= dh.getAllMedicines();
-                    ContentAdapter contentAdapter= new ContentAdapter(context, allMedicines, adapterEventType);
-                    mRecyclerView.setAdapter(contentAdapter);
-                }
-
-                else if(adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)){
-
-                    List<Movie> allMovies= dh.getAllMovies();
-                    ContentAdapter contentAdapter= new ContentAdapter(context, allMovies, adapterEventType);
-                    mRecyclerView.setAdapter(contentAdapter);
-                }
-
-                else if(adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
-
-                    List<AudioBook> allAudioBooks= dh.getAllAudioBooks();
-                    ContentAdapter contentAdapter= new ContentAdapter(context, allAudioBooks, adapterEventType);
-                    mRecyclerView.setAdapter(contentAdapter);
-                }
-
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -203,7 +193,7 @@ public class MainActivity extends FragmentActivity
         * contextual action bar setup and
         * click listeners
         * */
-        mActionModeCallback= new ActionMode.Callback() {
+        mActionModeCallback = new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
                 MenuInflater inflater = actionMode.getMenuInflater();
@@ -220,52 +210,44 @@ public class MainActivity extends FragmentActivity
             public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
 
                 // edit button
-                if(menuItem.getItemId() == R.id.item_edit){
+                if (menuItem.getItemId() == R.id.item_edit) {
 
-                    if(adapterEventType.equals(DatabaseHandler.TABLE_BOOK)){
-                        android.support.v4.app.DialogFragment dialogAddBook =  new DialogAddBook(context, false, true,
+                    if (adapterEventType.equals(DatabaseHandler.TABLE_BOOK)) {
+                        android.support.v4.app.DialogFragment dialogAddBook = new DialogAddBook(context, false, true,
 
-                                (Book)dh.getAllBooks().get(clickedItemPosition)
+                                (Book) dh.getAllBooks().get(clickedItemPosition)
                         );
                         dialogAddBook.show(getSupportFragmentManager(), "book");
-                    }
+                    } else if (adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)) {
+                        android.support.v4.app.DialogFragment dialogAddMedicine = new DialogAddMedicine(context, false, true,
 
-                    else if(adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)){
-                        android.support.v4.app.DialogFragment dialogAddMedicine =  new DialogAddMedicine(context, false, true,
-
-                                (Medicine)dh.getAllMedicines().get(clickedItemPosition)
+                                (Medicine) dh.getAllMedicines().get(clickedItemPosition)
                         );
                         dialogAddMedicine.show(getSupportFragmentManager(), "medicine");
-                    }
+                    } else if (adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)) {
+                        android.support.v4.app.DialogFragment dialogAddMovie = new DialogAddMovie(context, false, true,
 
-                    else if(adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)){
-                        android.support.v4.app.DialogFragment dialogAddMovie =  new DialogAddMovie(context, false, true,
-
-                                (Movie)dh.getAllMovies().get(clickedItemPosition)
+                                (Movie) dh.getAllMovies().get(clickedItemPosition)
                         );
                         dialogAddMovie.show(getSupportFragmentManager(), "movie");
-                    }
+                    } else if (adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
 
-                    else if(adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
+                        android.support.v4.app.DialogFragment dialogAddAudioBook = new DialogAddAudioBook(context, false, true,
 
-                        android.support.v4.app.DialogFragment dialogAddAudioBook =  new DialogAddAudioBook(context, false, true,
-
-                                (AudioBook)dh.getAllAudioBooks().get(clickedItemPosition)
+                                (AudioBook) dh.getAllAudioBooks().get(clickedItemPosition)
                         );
                         dialogAddAudioBook.show(getSupportFragmentManager(), "audio book");
-                    }
-
-                    else{
+                    } else {
                         Toast.makeText(context, "editing not implemented yet!", Toast.LENGTH_SHORT).show();
                     }
                     actionMode.finish();
                 }
 
                 // delete button
-                else if(menuItem.getItemId() == R.id.item_delete){
+                else if (menuItem.getItemId() == R.id.item_delete) {
                     dh.deleteItemFromATable(longPressedPosition, longPressedType);
 
-                    Toast.makeText(context, longPressedType +" item deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, longPressedType + " item deleted", Toast.LENGTH_SHORT).show();
                     refreshRecyclerView();
                     actionMode.finish();
                 }
@@ -285,55 +267,48 @@ public class MainActivity extends FragmentActivity
     /*
     * refresh the main recycler view based on navigational drawer selections
     * */
-    public void refreshAdapter(int adapterPosition){
-        String [] drawerMenuNames= getResources().getStringArray(R.array.drawer_list);
+    public void refreshAdapter(int adapterPosition) {
+        String[] drawerMenuNames = getResources().getStringArray(R.array.drawer_list);
         /*
         * use switch() case;
         * */
-        if(adapterPosition == 1){
-            this.adapterEventType= DatabaseHandler.TABLE_EVENT;
+        if (adapterPosition == 1) {
+            this.adapterEventType = DatabaseHandler.TABLE_EVENT;
 
-            List<Event> allEvents= dh.getAllEvents();
-            ContentAdapter contentAdapter= new ContentAdapter(this, allEvents, adapterEventType);
+            List<Event> allEvents = dh.getAllEvents();
+            ContentAdapter contentAdapter = new ContentAdapter(this, allEvents, adapterEventType);
             mRecyclerView.setAdapter(contentAdapter);
 
 
-        }
+        } else if (adapterPosition == 2) {
+            this.adapterEventType = DatabaseHandler.TABLE_BOOK;
 
-        else if(adapterPosition == 2){
-            this.adapterEventType= DatabaseHandler.TABLE_BOOK;
-
-            List<Book> allBooks= dh.getAllBooks();
-            ContentAdapter contentAdapter= new ContentAdapter(context, allBooks, adapterEventType);
+            List<Book> allBooks = dh.getAllBooks();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allBooks, adapterEventType);
             mRecyclerView.setAdapter(contentAdapter);
-        }
+        } else if (adapterPosition == 3) {
+            this.adapterEventType = DatabaseHandler.TABLE_MEDICINE;
 
-        else if(adapterPosition == 3){
-            this.adapterEventType= DatabaseHandler.TABLE_MEDICINE;
-
-            List<Medicine> allMedicines= dh.getAllMedicines();
-            ContentAdapter contentAdapter= new ContentAdapter(context, allMedicines, adapterEventType);
+            List<Medicine> allMedicines = dh.getAllMedicines();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allMedicines, adapterEventType);
             mRecyclerView.setAdapter(contentAdapter);
-        }
+        } else if (adapterPosition == 4) {
+            this.adapterEventType = DatabaseHandler.TABLE_MOVIE;
 
-        else if(adapterPosition == 4){
-            this.adapterEventType= DatabaseHandler.TABLE_MOVIE;
-
-            List<Movie> allMovies= dh.getAllMovies();
-            ContentAdapter contentAdapter= new ContentAdapter(context, allMovies, adapterEventType);
+            List<Movie> allMovies = dh.getAllMovies();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allMovies, adapterEventType);
             mRecyclerView.setAdapter(contentAdapter);
-        }
+        } else if (adapterPosition == 5) {
+            this.adapterEventType = DatabaseHandler.TABLE_AUDIO_BOOK;
 
-        else if(adapterPosition == 5){
-            this.adapterEventType= DatabaseHandler.TABLE_AUDIO_BOOK;
-
-            List<AudioBook> allAudioBooks= dh.getAllAudioBooks();
-            ContentAdapter contentAdapter= new ContentAdapter(context, allAudioBooks, adapterEventType);
+            List<AudioBook> allAudioBooks = dh.getAllAudioBooks();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allAudioBooks, adapterEventType);
             mRecyclerView.setAdapter(contentAdapter);
         }
 
         // set the title of action bar
         getActionBar().setTitle(drawerMenuNames[adapterPosition]);
+        mNavigationDrawerFragment.refresh();
         mNavigationDrawerFragment.closeDrawer();
 
 
@@ -453,15 +428,14 @@ public class MainActivity extends FragmentActivity
     * adapter calls this function when a long click on recycler view item
     * actual functionality of CAB is on mActionModeCallback inside onCreate()
     * */
-    public void setContextMenu(int position, String type){
+    public void setContextMenu(int position, String type) {
         if (mActionMode != null) {
 
         }
-        if(type.equals(this.adapterEventType)){
-            this.longPressedPosition= position;
-            this.longPressedType= type;
-        }
-        else{
+        if (type.equals(this.adapterEventType)) {
+            this.longPressedPosition = position;
+            this.longPressedType = type;
+        } else {
 
         }
         // Start the CAB using the ActionMode.Callback defined above
@@ -474,72 +448,88 @@ public class MainActivity extends FragmentActivity
     * we should use that method without this method
     * bad engineering!
     * */
-    private void refreshRecyclerView(){
-        if(this.longPressedType.equals(DatabaseHandler.TABLE_EVENT)){
+    private void refreshRecyclerView() {
+        if (this.longPressedType.equals(DatabaseHandler.TABLE_EVENT)) {
             refreshAdapter(1);
-        }
-        else if(this.longPressedType.equals(DatabaseHandler.TABLE_BOOK)){
+        } else if (this.longPressedType.equals(DatabaseHandler.TABLE_BOOK)) {
             refreshAdapter(2);
-        }
-        else if(this.longPressedType.equals(DatabaseHandler.TABLE_MEDICINE)){
+        } else if (this.longPressedType.equals(DatabaseHandler.TABLE_MEDICINE)) {
             refreshAdapter(3);
-        }
-        else if(this.longPressedType.equals(DatabaseHandler.TABLE_MOVIE)){
+        } else if (this.longPressedType.equals(DatabaseHandler.TABLE_MOVIE)) {
             refreshAdapter(4);
-        }
-        else if(this.longPressedType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
+        } else if (this.longPressedType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
             refreshAdapter(5);
         }
-
     }
 
     /*
     * handles on click events on recycler view
     * adapter calls this method when an item is clicked
     * */
-    public void showViewingDialog(String eventType, int position){
-        if(eventType.equals(this.adapterEventType)){
+    public void showViewingDialog(String eventType, int position) {
+        if (eventType.equals(this.adapterEventType)) {
             // negation can't be happen
             this.clickedItemPosition = position;
 
-            if(eventType.equals(DatabaseHandler.TABLE_BOOK)){
-                android.support.v4.app.DialogFragment dialogAddBook =  new DialogAddBook(context, true, false,
+            if (eventType.equals(DatabaseHandler.TABLE_BOOK)) {
+                android.support.v4.app.DialogFragment dialogAddBook = new DialogAddBook(context, true, false,
 
-                        (Book)dh.getAllBooks().get(position)
-                        );
+                        (Book) dh.getAllBooks().get(position)
+                );
                 dialogAddBook.show(getSupportFragmentManager(), "book");
-            }
+            } else if (eventType.equals(DatabaseHandler.TABLE_MEDICINE)) {
+                android.support.v4.app.DialogFragment dialogAddMedicine = new DialogAddMedicine(context, true, false,
 
-            else if(eventType.equals(DatabaseHandler.TABLE_MEDICINE)){
-                android.support.v4.app.DialogFragment dialogAddMedicine =  new DialogAddMedicine(context, true, false,
-
-                        (Medicine)dh.getAllMedicines().get(position)
-                        );
+                        (Medicine) dh.getAllMedicines().get(position)
+                );
                 dialogAddMedicine.show(getSupportFragmentManager(), "medicine");
-            }
+            } else if (eventType.equals(DatabaseHandler.TABLE_MOVIE)) {
+                android.support.v4.app.DialogFragment dialogAddMovie = new DialogAddMovie(context, true, false,
 
-            else if(eventType.equals(DatabaseHandler.TABLE_MOVIE)){
-                android.support.v4.app.DialogFragment dialogAddMovie =  new DialogAddMovie(context, true, false,
-
-                        (Movie)dh.getAllMovies().get(position)
-                        );
+                        (Movie) dh.getAllMovies().get(position)
+                );
                 dialogAddMovie.show(getSupportFragmentManager(), "movie");
-            }
+            } else if (eventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
 
-            else if(eventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)){
+                android.support.v4.app.DialogFragment dialogAddAudioBook = new DialogAddAudioBook(context, true, false,
 
-                android.support.v4.app.DialogFragment dialogAddAudioBook =  new DialogAddAudioBook(context, true,false,
-
-                        (AudioBook)dh.getAllAudioBooks().get(position)
-                        );
+                        (AudioBook) dh.getAllAudioBooks().get(position)
+                );
                 dialogAddAudioBook.show(getSupportFragmentManager(), "audio book");
-            }
-            else{
+            } else {
                 Toast.makeText(context, "viewing not implemented yet!", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapterEventType.equals(DatabaseHandler.TABLE_EVENT)) {
+            List<Event> allEvents = dh.getAllEvents();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allEvents, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_BOOK)) {
+            List<Book> allBooks = dh.getAllBooks();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allBooks, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_MEDICINE)) {
 
+            List<Medicine> allMedicines = dh.getAllMedicines();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allMedicines, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_MOVIE)) {
+
+            List<Movie> allMovies = dh.getAllMovies();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allMovies, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        } else if (adapterEventType.equals(DatabaseHandler.TABLE_AUDIO_BOOK)) {
+
+            List<AudioBook> allAudioBooks = dh.getAllAudioBooks();
+            ContentAdapter contentAdapter = new ContentAdapter(context, allAudioBooks, adapterEventType);
+            mRecyclerView.setAdapter(contentAdapter);
+        }
+        mNavigationDrawerFragment.refresh();
+    }
 }

@@ -21,9 +21,9 @@ public class DialogAddMedicine extends DialogFragment {
     EditText editTextMedicineName;
     EditText editTextMedicineDosage;
 
-    boolean isViewing= false;
-    boolean isEditing= false;
-    Medicine medicine= null;
+    boolean isViewing = false;
+    boolean isEditing = false;
+    Medicine medicine = null;
 
     @SuppressLint("ValidFragment")
     public DialogAddMedicine(Context context, boolean isViewing, boolean isEditing, Medicine medicine) {
@@ -33,31 +33,29 @@ public class DialogAddMedicine extends DialogFragment {
         this.isViewing = isViewing;
     }
 
-    public DialogAddMedicine(){
+    public DialogAddMedicine() {
 
     }
 
     @SuppressLint("ValidFragment")
-    public DialogAddMedicine(Context context){
-        this.context= context;
+    public DialogAddMedicine(Context context) {
+        this.context = context;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //    return super.onCreateDialog(savedInstanceState);
 
-        AlertDialog.Builder builder= new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View viewAddMedicine= inflater.inflate(R.layout.dialog_add_medicine, null);
+        View viewAddMedicine = inflater.inflate(R.layout.dialog_add_medicine, null);
 
-        final TextView dialogTitle= (TextView)viewAddMedicine.findViewById(R.id.textViewDialogTitle);
-        this.editTextMedicineName = (EditText)viewAddMedicine.findViewById(R.id.editTextMedicineName);
-        this.editTextMedicineDosage= (EditText)viewAddMedicine.findViewById(R.id.editTextMedicineDosage);
+        final TextView dialogTitle = (TextView) viewAddMedicine.findViewById(R.id.textViewDialogTitle);
+        this.editTextMedicineName = (EditText) viewAddMedicine.findViewById(R.id.editTextMedicineName);
+        this.editTextMedicineDosage = (EditText) viewAddMedicine.findViewById(R.id.editTextMedicineDosage);
         final DatabaseHandler dh = new DatabaseHandler(context);
 
 
-
-
-        if(isViewing && !isEditing){
+        if (isViewing && !isEditing) {
             dialogTitle.setText("VIEW MEDICINE");
             this.editTextMedicineName.setText(this.medicine.getName());
             this.editTextMedicineDosage.setText(this.medicine.getDosage());
@@ -73,9 +71,7 @@ public class DialogAddMedicine extends DialogFragment {
                         }
                     });
 
-        }
-
-        else if(isEditing && !isViewing){
+        } else if (isEditing && !isViewing) {
             dialogTitle.setText("EDIT MEDICINE");
             this.editTextMedicineName.setText(this.medicine.getName());
             this.editTextMedicineDosage.setText(this.medicine.getDosage());
@@ -87,8 +83,8 @@ public class DialogAddMedicine extends DialogFragment {
                             medicine.setName(editTextMedicineName.getText().toString());
                             medicine.setDosage(editTextMedicineDosage.getText().toString());
 
-                            int noOfRowsAffected= dh.updateMedicine(medicine);
-                            Toast.makeText(getActivity(), "updated. " + noOfRowsAffected+" rows affected.", Toast.LENGTH_SHORT).show();
+                            int noOfRowsAffected = dh.updateMedicine(medicine);
+                            Toast.makeText(getActivity(), "updated. " + noOfRowsAffected + " rows affected.", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
@@ -98,9 +94,7 @@ public class DialogAddMedicine extends DialogFragment {
                         }
                     });
 
-        }
-
-        else{
+        } else {
             builder.setView(viewAddMedicine)
                     .setPositiveButton("add medicine", new DialogInterface.OnClickListener() {
                         @Override
@@ -108,9 +102,10 @@ public class DialogAddMedicine extends DialogFragment {
                             // add to db
 
 
-                            long rowId = dh.addMedicine(new Medicine(editTextMedicineName.getText().toString(),
-                                    editTextMedicineDosage.getText().toString(), 1
-                            ));
+                            long rowId = dh.addMedicine(
+                                    new Medicine(editTextMedicineName.getText().toString(),
+                                            editTextMedicineDosage.getText().toString(), 1
+                                    ));
                             if (rowId != -1) {
 
                                 ((AddEventActivity) getActivity()).setEventResourceId(rowId);

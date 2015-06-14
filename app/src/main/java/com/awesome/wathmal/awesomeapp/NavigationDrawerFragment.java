@@ -54,7 +54,7 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private awesomeadapter adapter;
+    public awesomeadapter adapter;
 
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mDrawerListView;
@@ -128,6 +128,12 @@ public class NavigationDrawerFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return mDrawerListView;
+    }
+
+    public void refresh(){
+        adapter = new awesomeadapter(getActivity(), getData());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
 
@@ -343,4 +349,11 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
     }
+
+    @Override
+    public void onResume() {
+        refresh();
+        super.onResume();
+    }
+
 }
