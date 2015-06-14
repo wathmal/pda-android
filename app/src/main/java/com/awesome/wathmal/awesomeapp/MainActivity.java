@@ -97,7 +97,7 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onClick(View v) {
                 Intent addEventIntent = new Intent(MainActivity.this, AddEventActivity.class);
-                MainActivity.this.startActivity(addEventIntent);
+                startActivity(addEventIntent);
             }
         });
         fabMedicineButton.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,7 @@ public class MainActivity extends FragmentActivity
                 Intent addMedicineIntent = new Intent(MainActivity.this, AddEventActivity.class);
                 addMedicineIntent.putExtra("eventType", 2);
 
-                MainActivity.this.startActivity(addMedicineIntent);
+                startActivity(addMedicineIntent);
 
             }
         });
@@ -116,7 +116,7 @@ public class MainActivity extends FragmentActivity
                 Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
                 intent.putExtra("eventType", 3);
 
-                MainActivity.this.startActivity(intent);
+                startActivity(intent);
 
             }
         });
@@ -126,7 +126,7 @@ public class MainActivity extends FragmentActivity
                 Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
                 intent.putExtra("eventType", 4);
 
-                MainActivity.this.startActivity(intent);
+                startActivity(intent);
 
             }
         });
@@ -136,8 +136,7 @@ public class MainActivity extends FragmentActivity
                 Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
                 intent.putExtra("eventType", 1);
 
-                MainActivity.this.startActivity(intent);
-
+                startActivity(intent);
             }
         });
 

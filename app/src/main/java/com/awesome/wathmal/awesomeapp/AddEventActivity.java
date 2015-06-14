@@ -74,7 +74,7 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
 
 
         // get all locations.
-        this.locations = Collections.emptyList();
+        //this.locations = Collections.emptyList();
         this.locations = this.dh.getAllLocations();
 
 
@@ -133,8 +133,14 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment fragment = new DatePickerFragment();
-                fragment.show(getFragmentManager(), "choose date");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogFragment fragment = new DatePickerFragment();
+                        fragment.show(getFragmentManager(), "choose date");
+                    }
+                }).start();
+
             }
         });
 
@@ -143,8 +149,13 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment fragment = new TimePickerFragment();
-                fragment.show(getFragmentManager(), "choose time");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogFragment fragment = new TimePickerFragment();
+                        fragment.show(getFragmentManager(), "choose time");
+                    }
+                }).start();
             }
         });
 
