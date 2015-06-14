@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // all static variables
     // database version
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 24;
 
     // db name
     private static final String DATABASE_NAME = "pdaproject";
@@ -178,7 +178,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_EVENT_TABLE = "CREATE TABLE " + TABLE_EVENT + "(" +
                 EVENT_KEY_ID + " INTEGER PRIMARY KEY NOT NULL," +
                 EVENT_KEY_TITLE + " VARCHAR(30) NOT NULL," +
-                EVENT_KEY_DUE_DATE + " DATE CHECK('" + EVENT_KEY_DUE_DATE + "' > datetime('now'))," +     // check id duedate is after now
+                EVENT_KEY_DUE_DATE + " DATE CHECK(" + EVENT_KEY_DUE_DATE + " > datetime('now'))," +     // check id duedate is after now
                 EVENT_KEY_DESC + " VARCHAR(200)," +
                 EVENT_KEY_REPEATED + " BOOLEAN," +
                 EVENT_KEY_LOCATION_ID + " INTEGER REFERENCES " + TABLE_LOCATION + "(" + LOCATION_KEY_ID + ") ON UPDATE CASCADE," +
@@ -284,18 +284,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(EVENT_KEY_TITLE, "");
         values.put(EVENT_KEY_DESC, "");
-        values.put(EVENT_KEY_DUE_DATE, "");
+        /*
+        * after adding check() date for current time this always fails
+        * if current time is bigger than due date
+        * */
+        values.put(EVENT_KEY_DUE_DATE, "2020-12-31 23:59:59");
         values.put(EVENT_KEY_REPEATED, false);        // can pu boolean
         // add newly updated values
         values.put(EVENT_KEY_LOCATION_ID, 1);
-        values.put(EVENT_KEY_RECURRENCE_TYPE, "");
-        values.put(EVENT_KEY_EVENT_TYPE, "");
+        values.put(EVENT_KEY_RECURRENCE_TYPE, "todo");
+        values.put(EVENT_KEY_EVENT_TYPE, "event");
         values.put(EVENT_KEY_RESOURCE_ID, 0);
         values.put(EVENT_KEY_NOTIFY, false);
         db.insert(TABLE_EVENT, null, values);
 
         ContentValues media = new ContentValues();
-        media.put(MEDIA_KEY_TYPE, "");
+        media.put(MEDIA_KEY_TYPE, "movie");
         media.put(MEDIA_KEY_RESOURCE_ID, 0);
         media.put(MEDIA_KEY_EVENT_ID, 1);
 
@@ -365,7 +369,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public long addEvent(Event event) throws SQLiteConstraintException {
+    public long addEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);

@@ -251,13 +251,14 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         DatabaseHandler dh= new DatabaseHandler(this);
 
         long eventRowId =0;
-
+        eventRowId = dh.addEvent(newEvent);
         /*
         * exception may throw due to check constraints in sqlite
         * */
-        try {
+        if(eventRowId != -1){
 
-            eventRowId = dh.addEvent(newEvent);
+
+            Log.d("check","event id = "+ eventRowId);
             int noOfRowsAffected = 0;
             // book
             if (this.selectedEventType.equals(this.eventTypes[1])) {
@@ -361,8 +362,8 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
             Toast.makeText(this, "new event added, id= " + eventRowId, Toast.LENGTH_SHORT).show();
             finish();
 
-        } catch (Exception x){
-            Log.e("exception", x.getMessage());
+        } else {
+            Toast.makeText(this, "constraint failed!", Toast.LENGTH_SHORT).show();
         }
 
 
