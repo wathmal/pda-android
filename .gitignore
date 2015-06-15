@@ -6,3 +6,6 @@
 /build
 pda-android.iml
 *.iml
+.idea/gradle.xml
+.idea/modules.xml
+app/app.iml
