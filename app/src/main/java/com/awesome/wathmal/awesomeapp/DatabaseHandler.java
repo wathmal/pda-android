@@ -317,6 +317,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_AUDIO_BOOK_INDEX);
         db.execSQL(CREATE_MEDICINE_INDEX);
 
+        // Creating Triggers
+        String CREATE_TRIGGER_1 = "CREATE TRIGGER update_after_event_added AFTER INSERT ON " + TABLE_EVENT +
+                " BEGIN " +
+                       "IF (" + TABLE_EVENT + "." + EVENT_KEY_RECURRENCE_TYPE + " == 'todo')" +
+                            "INSERT INTO " + TABLE_TODO + "(" + TODO_EVENT_ID + ") VALUES (" + TABLE_EVENT + "." + EVENT_KEY_ID + ");" +
+                       "IF (" + TABLE_EVENT + "." + EVENT_KEY_RECURRENCE_TYPE + " == 'daily')" +
+                            "INSERT INTO " + TABLE_DAILY + "(" + DAILY_EVENT_ID + ") VALUES (" + TABLE_EVENT + "." + EVENT_KEY_ID + ");" +
+                       "IF (" + TABLE_EVENT + "." + EVENT_KEY_RECURRENCE_TYPE + " == 'weekly')" +
+                            "INSERT INTO " + TABLE_WEEKLY + "(" + WEEKLY_EVENT_ID + ") VALUES (" + TABLE_EVENT + "." + EVENT_KEY_ID + ");" +
+                       "IF (" + TABLE_EVENT + "." + EVENT_KEY_RECURRENCE_TYPE + " == 'monthly')" +
+                            "INSERT INTO " + TABLE_MONTHLY + "(" + MONTHLY_EVENT_ID + ") VALUES (" + TABLE_EVENT + "." + EVENT_KEY_ID + ");" +
+                       "ELSE " +
+                            "INSERT INTO " + TABLE_YEARLY + "(" + YEARLY_EVENT_ID + ") VALUES (" + TABLE_EVENT + "." + EVENT_KEY_ID + ");" +
+                " END;";
+
+        db.execSQL(CREATE_TRIGGER_1);
 
 
         /*
