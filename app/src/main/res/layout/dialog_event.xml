@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="VIEW EVENT"
+        android:id="@+id/textViewDialogTitle"
+        android:layout_alignParentTop="true"
+        android:gravity="center" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextEventTitle"
+        android:layout_below="@id/textViewDialogTitle"
+        android:layout_alignParentStart="true"
+        android:hint="event title"
+        tools:ignore="RtlCompat" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextEventDescription"
+        android:layout_below="@+id/editTextEventTitle"
+        android:layout_centerHorizontal="true"
+        android:hint="event description" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextEventDescription"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:baselineAligned="false"
+        android:layout_marginTop="15dp"
+        android:id="@+id/linearLayout">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:textAlignment="center"
+            android:id="@+id/editTextDate"
+            android:hint="date"
+            android:gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="time"
+            android:textAlignment="center"
+            android:id="@+id/editTextTime"
+            android:hint="time"
+            android:gravity="center_horizontal" />
+
+
+
+    </LinearLayout>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="notify"
+        android:id="@+id/switch1"
+        android:checked="false"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="daily"
+        android:id="@+id/textViewRecurrType"
+        android:layout_below="@+id/switch1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="medicine"
+        android:id="@+id/textViewEventType"
+        android:layout_alignTop="@+id/switch1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
