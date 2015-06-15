@@ -508,7 +508,13 @@ public class MainActivity extends FragmentActivity
                 );
                 dialogAddAudioBook.show(getSupportFragmentManager(), "audio book");
             } else {
-                Toast.makeText(context, "viewing not implemented yet!", Toast.LENGTH_SHORT).show();
+                android.support.v4.app.DialogFragment dialogEvent = new DialogEvent(context, true, false,
+
+                        dh.getAllEvents().get(position)
+                );
+                dialogEvent.show(getSupportFragmentManager(), "event");
+
+                //Toast.makeText(context, "viewing not implemented yet!", Toast.LENGTH_SHORT).show();
             }
 
         }
