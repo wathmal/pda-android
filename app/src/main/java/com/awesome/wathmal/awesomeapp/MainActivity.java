@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
@@ -775,8 +777,11 @@ public class MainActivity extends FragmentActivity
         for (int i = 0; i < allEvents.size(); i++) {
            allEvents.get(i).get_date();
         Date date= allEvents.get(0).get_date();
-        caldroidFragment.setBackgroundResourceForDate(R.color.green, date);
+            //TextDrawable drawable2 = TextDrawable.builder().buildRect("S",2);
+        caldroidFragment.setBackgroundResourceForDate(R.color.blue, date);
         caldroidFragment.setTextColorForDate(R.color.white, date);
+           // caldroidFragment.
+        //caldroidFragment.set
         }
     }
 }
