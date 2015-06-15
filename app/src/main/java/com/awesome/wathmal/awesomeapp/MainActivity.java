@@ -280,7 +280,12 @@ public class MainActivity extends FragmentActivity
         /*
         * use switch() case;
         * */
-    if (adapterPosition==0){
+    if(adapterPosition!=0 && !caldroidFragment.equals(null)){
+        caldroidFragment.dismiss();//hide();
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+     if (adapterPosition==0){
+
         showCalender();
     }
          else if (adapterPosition == 1) {
