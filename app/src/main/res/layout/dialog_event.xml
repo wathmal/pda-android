@@ -53,8 +53,7 @@
             android:inputType="date"
             android:textAlignment="center"
             android:id="@+id/editTextDate"
-            android:hint="date"
-            android:gravity="center_horizontal" />
+            android:hint="date" />
 
         <EditText
             android:layout_width="0dp"
@@ -64,7 +63,7 @@
             android:textAlignment="center"
             android:id="@+id/editTextTime"
             android:hint="time"
-            android:gravity="center_horizontal" />
+            android:gravity="right" />
 
 
 

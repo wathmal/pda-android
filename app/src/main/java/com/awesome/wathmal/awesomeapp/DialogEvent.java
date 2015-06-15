@@ -60,14 +60,16 @@ public class DialogEvent extends DialogFragment {
         DateFormat dateOnly= new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat timeOnly= new SimpleDateFormat("hh:mm", Locale.ENGLISH);
 
+        editTextEventTitle.setText(event.get_title());
+        editTextEventDescription.setText(event.get_description());
+        editTextDate.setText(dateOnly.format(this.event.get_date()));
+        editTextTime.setText(timeOnly.format(this.event.get_date()));
+        switchNotify.setChecked(this.event.isNotify());
+
         if(isViewing && !isEditing){
             dialogTitle.setText("VIEW EVENT");
 
-            editTextEventTitle.setText(event.get_title());
-            editTextEventDescription.setText(event.get_description());
-            editTextDate.setText(dateOnly.format(this.event.get_date()));
-            editTextTime.setText(timeOnly.format(this.event.get_date()));
-            switchNotify.setChecked(this.event.isNotify());
+
 
             editTextEventTitle.setEnabled(false);
             editTextEventDescription.setEnabled(false);
@@ -85,6 +87,10 @@ public class DialogEvent extends DialogFragment {
 
         }
         else if(isEditing && !isViewing){
+            dialogTitle.setText("EDIT EVENT");
+
+
+
 
         }
 
