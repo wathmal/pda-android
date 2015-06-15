@@ -53,7 +53,8 @@
             android:inputType="date"
             android:textAlignment="center"
             android:id="@+id/editTextDate"
-            android:hint="date" />
+            android:hint="date"
+            android:gravity="center_horizontal" />
 
         <EditText
             android:layout_width="0dp"
@@ -63,7 +64,7 @@
             android:textAlignment="center"
             android:id="@+id/editTextTime"
             android:hint="time"
-            android:gravity="right" />
+            android:gravity="center_horizontal" />
 
 
 
@@ -79,6 +80,25 @@
         android:layout_alignRight="@+id/linearLayout"
         android:layout_alignEnd="@+id/linearLayout" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="daily"
+        android:id="@+id/textViewRecurrType"
+        android:layout_below="@+id/switch1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="medicine"
+        android:id="@+id/textViewEventType"
+        android:layout_alignTop="@+id/switch1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

@@ -13,6 +13,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,15 +57,23 @@ public class DialogEvent extends DialogFragment {
         final EditText editTextEventDescription= (EditText)viewEvent.findViewById(R.id.editTextEventDescription);
         final EditText editTextDate= (EditText)viewEvent.findViewById(R.id.editTextDate);
         final EditText editTextTime= (EditText)viewEvent.findViewById(R.id.editTextTime);
+        final TextView textViewEventType= (TextView)viewEvent.findViewById(R.id.textViewEventType);
+        final TextView textViewRecurrType= (TextView)viewEvent.findViewById(R.id.textViewRecurrType);
+
         final Switch switchNotify= (Switch)viewEvent.findViewById(R.id.switch1);
         DateFormat dateOnly= new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat timeOnly= new SimpleDateFormat("hh:mm", Locale.ENGLISH);
+        DateFormat timeOnly= new SimpleDateFormat("hh:mm:ss", Locale.ENGLISH);
+
+        final DatabaseHandler dh= new DatabaseHandler(this.context);
+
 
         editTextEventTitle.setText(event.get_title());
         editTextEventDescription.setText(event.get_description());
         editTextDate.setText(dateOnly.format(this.event.get_date()));
         editTextTime.setText(timeOnly.format(this.event.get_date()));
         switchNotify.setChecked(this.event.isNotify());
+        textViewEventType.setText(event.getEventType());
+        textViewRecurrType.setText(event.getRecurrenceType());
 
         if(isViewing && !isEditing){
             dialogTitle.setText("VIEW EVENT");
@@ -89,6 +98,29 @@ public class DialogEvent extends DialogFragment {
         else if(isEditing && !isViewing){
             dialogTitle.setText("EDIT EVENT");
 
+
+            builder.setView(viewEvent)
+                    .setPositiveButton("update event", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            event.set_title(editTextEventTitle.getText().toString());
+                            event.set_description(editTextEventDescription.getText().toString());
+                            event.setNotify(switchNotify.isChecked());
+                            String dateString= editTextDate.getText().toString()+ " "+ editTextTime.getText().toString();
+                            event.set_date(dateString);
+
+
+                            int noOfRowsAffected= dh.updateEvent(event);
+                            Toast.makeText(getActivity(), "updated. " + noOfRowsAffected + " rows affected.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DialogEvent.this.getDialog().cancel();
+                        }
+                    });
 
 
 

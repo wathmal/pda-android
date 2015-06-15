@@ -237,7 +237,11 @@ public class MainActivity extends FragmentActivity
                         );
                         dialogAddAudioBook.show(getSupportFragmentManager(), "audio book");
                     } else {
-                        Toast.makeText(context, "editing not implemented yet!", Toast.LENGTH_SHORT).show();
+                        android.support.v4.app.DialogFragment dialogEvent = new DialogEvent(context, false, true,
+
+                                dh.getAllEvents().get(clickedItemPosition)
+                        );
+                        dialogEvent.show(getSupportFragmentManager(), "event");
                     }
                     actionMode.finish();
                 }
