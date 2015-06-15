@@ -138,6 +138,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String YEARLY_ID = "yearly_id";
     public static final String YEARLY_EVENT_ID = "event_id";
 
+    // INDEX NAMES
+    public static final String LOCATION_INDEX = "loc_index";
+    public static final String EVENT_INDEX = "event_index";
+    public static final String MEDIA_INDEX = "media_index";
+    public static final String BOOK_INDEX = "book_index";
+    public static final String MOVIE_INDEX = "movie_index";
+    public static final String AUDIO_BOOK_INDEX = "audio_book_index";
+    public static final String MEDICINE_INDEX = "medicine_index";
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -267,6 +276,48 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_WEEKLY_TABLE);
         db.execSQL(CREATE_MONTHLY_TABLE);
         db.execSQL(CREATE_YEARLY_TABLE);
+
+
+
+        // Index Creating Statements
+        String CREATE_LOCATION_TABLE_INDEX = "CREATE INDEX " + LOCATION_INDEX +
+                "ON" + TABLE_LOCATION + "(" +
+                LOCATION_KEY_ID + ")";
+
+        String CREATE_EVENT_INDEX = "CREATE INDEX " + EVENT_INDEX +
+                "ON" + TABLE_EVENT + "(" +
+                EVENT_KEY_TITLE + ")";
+
+        String CREATE_MEDIA_INDEX = "CERATE INDEX " + MEDIA_INDEX +
+                "ON" + TABLE_MEDIA + "(" +
+                MEDIA_KEY_ID + ")";
+
+        String CREATE_BOOK_INDEX = "CREATE INDEX " + BOOK_INDEX +
+                "ON" + TABLE_BOOK + "(" +
+                BOOK_KEY_TITLE + ")";
+
+        String CREATE_MOVIE_INDEX = "CREATE INDEX " + MOVIE_INDEX +
+                "ON" + TABLE_MOVIE + "(" +
+                MOVIE_KEY_TITLE + ")";
+
+        String CREATE_AUDIO_BOOK_INDEX = "CREATE INDEX " + AUDIO_BOOK_INDEX +
+                "ON" + TABLE_AUDIO_BOOK + "(" +
+                AUDIO_BOOK_TITLE + ")";
+
+        String CREATE_MEDICINE_INDEX = "CREATE INDEX " + MEDICINE_INDEX +
+                "ON"+ TABLE_MEDICINE + "(" +
+                MEDICINE_KEY_NAME + ")";
+
+        // Creating the indexes
+        db.execSQL(CREATE_LOCATION_TABLE_INDEX);
+        db.execSQL(CREATE_EVENT_INDEX);
+        db.execSQL(CREATE_MEDIA_INDEX);
+        db.execSQL(CREATE_BOOK_INDEX);
+        db.execSQL(CREATE_MOVIE_INDEX);
+        db.execSQL(CREATE_AUDIO_BOOK_INDEX);
+        db.execSQL(CREATE_MEDICINE_INDEX);
+
+
 
         /*
         * dummy event and location
