@@ -171,8 +171,6 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         final int eventTypeFromIntent;
         if ((eventTypeFromIntent = currentIntent.getIntExtra("eventType", 0)) != 0) {
             this.selectedEventType = this.eventTypes[eventTypeFromIntent];
-
-
             spinnerEventType.setSelection(eventTypeFromIntent);
             spinnerEventType.setEnabled(false);
 
@@ -197,12 +195,9 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
     get Date from the DatePickerFragment and handle inside the AddEventActivity
      */
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-
         monthOfYear = monthOfYear + 1;
         this.dateString = String.valueOf(year + "-" + monthOfYear + "-" + dayOfMonth);
         updateDateAndTime();
-
-
     }
 
     public void setTime(int hourOfDay, int minutes) {
@@ -389,10 +384,12 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
     public void setData(Object data) {
         this.data = data;
         update_data_insances();
-        textTitle.setText(((Medicine) data).getName());
-        textDescription.setText(((Medicine)data).getDosage());
-
+        textTitle.setText(((Medicine) data).getName() + ' ' + ((Medicine) data).getDosage());
+        textTitle.setTextColor( getResources().getColor(R.color.cyan) );
+        textTitle.setEnabled(false);
+        //textDescription.setText();
     }
+
     public void setEventResourceId(long eventResourceId) {
         this.eventResourceId = eventResourceId;
     }

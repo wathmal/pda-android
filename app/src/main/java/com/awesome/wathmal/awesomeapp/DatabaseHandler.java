@@ -477,7 +477,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(MEDICINE_KEY_NAME, medicine.getName());
         values.put(MEDICINE_KEY_DOSAGE, medicine.getDosage());
-
+        values.put(MEDIA_KEY_EVENT_ID,medicine.getEventId());
         return db.update(TABLE_MEDICINE, values, MEDICINE_KEY_ID + " = ?", new String[]{String.valueOf(medicine.getId())});
     }
 
