@@ -54,6 +54,9 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
     private boolean eventNotify = false;
     /*event attributes*/
 
+    // keep data
+    Object data;
+
     private DatabaseHandler dh;
     String locationArray[];
     List<Location> locations;
@@ -61,6 +64,8 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
 
     Spinner spinnerLocation;
 
+    EditText textTitle;
+    EditText textDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +90,6 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         this.dateString = String.valueOf(c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DAY_OF_MONTH)+1);
         this.timeString = String.valueOf(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":00");
         updateDateAndTime();
-
-
 
         /*
         * initialise spinners
@@ -238,8 +241,8 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
      */
     public void saveButtonHandler(View view) {
 
-        EditText textTitle = (EditText) findViewById(R.id.editTextEventTitle);
-        EditText textDescription = (EditText) findViewById(R.id.editTextEventDescription);
+        textTitle = (EditText) findViewById(R.id.editTextEventTitle);
+        textDescription = (EditText) findViewById(R.id.editTextEventDescription);
 
         Switch switchRepeated = (Switch) findViewById(R.id.switchRepeated);
         Switch switchNotify = (Switch) findViewById(R.id.switchNotify);
@@ -377,6 +380,19 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
 
     }
 
+    private void update_data_insances(){
+        textTitle = (EditText) findViewById(R.id.editTextEventTitle);
+        textDescription = (EditText) findViewById(R.id.editTextEventDescription);
+    }
+
+
+    public void setData(Object data) {
+        this.data = data;
+        update_data_insances();
+        textTitle.setText(((Medicine) data).getName());
+        textDescription.setText(((Medicine)data).getDosage());
+
+    }
     public void setEventResourceId(long eventResourceId) {
         this.eventResourceId = eventResourceId;
     }

@@ -25,6 +25,7 @@ public class DialogAddMedicine extends DialogFragment {
     boolean isEditing = false;
     Medicine medicine = null;
 
+
     @SuppressLint("ValidFragment")
     public DialogAddMedicine(Context context, boolean isViewing, boolean isEditing, Medicine medicine) {
         this.context = context;
@@ -100,15 +101,17 @@ public class DialogAddMedicine extends DialogFragment {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             // add to db
+                            Medicine med = new Medicine(editTextMedicineName.getText().toString(),
+                                    editTextMedicineDosage.getText().toString(), 1
+                            );
 
+                            long rowId = dh.addMedicine(med);
 
-                            long rowId = dh.addMedicine(
-                                    new Medicine(editTextMedicineName.getText().toString(),
-                                            editTextMedicineDosage.getText().toString(), 1
-                                    ));
                             if (rowId != -1) {
 
                                 ((AddEventActivity) getActivity()).setEventResourceId(rowId);
+                                ((AddEventActivity) getActivity()).setData(med);
+
                                 Toast.makeText(getActivity(), "added new medicine, id= " + rowId, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getActivity(), "error occurred", Toast.LENGTH_SHORT).show();
