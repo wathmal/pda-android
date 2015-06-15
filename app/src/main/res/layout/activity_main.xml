@@ -40,6 +40,13 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <!--calender-->
+        <LinearLayout
+            android:id="@+id/calendar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
         <!--<com.melnykov.fab.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
