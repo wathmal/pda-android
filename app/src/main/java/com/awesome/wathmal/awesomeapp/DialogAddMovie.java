@@ -122,6 +122,8 @@ public class DialogAddMovie extends DialogFragment {
                             if (rowId != -1) {
 
                                 ((AddEventActivity) getActivity()).setEventResourceId(rowId);
+                                ((AddEventActivity) getActivity()).setData(movie);
+
                                 Toast.makeText(getActivity(), "added new movie, id= " + rowId, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getActivity(), "error occurred", Toast.LENGTH_SHORT).show();

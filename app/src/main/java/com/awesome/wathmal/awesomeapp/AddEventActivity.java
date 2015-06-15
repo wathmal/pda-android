@@ -384,7 +384,11 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
     public void setData(Object data) {
         this.data = data;
         update_data_insances();
-        textTitle.setText(((Medicine) data).getName() + ' ' + ((Medicine) data).getDosage());
+        if(data instanceof Medicine) {
+            textTitle.setText(((Medicine) data).getName() + ' ' + ((Medicine) data).getDosage());
+        }else if(data instanceof Movie){
+            textTitle.setText(((Movie) data).getTitle());
+        }
         textTitle.setTextColor( getResources().getColor(R.color.cyan) );
         textTitle.setEnabled(false);
         //textDescription.setText();
