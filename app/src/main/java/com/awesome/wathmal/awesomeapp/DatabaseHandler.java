@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // all static variables
     // database version
-    private static final int DATABASE_VERSION = 24;
+    private static final int DATABASE_VERSION = 25;
 
     // db name
     private static final String DATABASE_NAME = "pdaproject";
@@ -178,7 +178,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_EVENT_TABLE = "CREATE TABLE " + TABLE_EVENT + "(" +
                 EVENT_KEY_ID + " INTEGER PRIMARY KEY NOT NULL," +
                 EVENT_KEY_TITLE + " VARCHAR(30) NOT NULL," +
-                EVENT_KEY_DUE_DATE + " DATE CHECK(" + EVENT_KEY_DUE_DATE + " > datetime('now'))," +     // check id duedate is after now
+                EVENT_KEY_DUE_DATE + " DATE CHECK(" + EVENT_KEY_DUE_DATE + " >= datetime('now'))," +     // check id duedate is after now
                 EVENT_KEY_DESC + " VARCHAR(200)," +
                 EVENT_KEY_REPEATED + " BOOLEAN," +
                 EVENT_KEY_LOCATION_ID + " INTEGER REFERENCES " + TABLE_LOCATION + "(" + LOCATION_KEY_ID + ") ON UPDATE CASCADE," +
