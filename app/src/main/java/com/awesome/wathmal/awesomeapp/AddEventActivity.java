@@ -82,7 +82,7 @@ public class AddEventActivity extends FragmentActivity implements AdapterView.On
         Calendar c = Calendar.getInstance();
         // this give month number starting from 1
         int month = c.get(Calendar.MONTH) + 1;
-        this.dateString = String.valueOf(c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DAY_OF_MONTH));
+        this.dateString = String.valueOf(c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DAY_OF_MONTH+1));
         this.timeString = String.valueOf(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":00");
         updateDateAndTime();
 
