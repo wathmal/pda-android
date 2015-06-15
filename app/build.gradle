@@ -26,4 +26,5 @@ dependencies {
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     compile 'com.android.support:support-v4:21.0.+'
     compile 'net.i2p.android.ext:floatingactionbutton:1.8.0'
+    compile 'com.roomorama:caldroid:2.0.0'
 }
